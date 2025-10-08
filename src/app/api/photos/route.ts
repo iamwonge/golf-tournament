@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import sharp from 'sharp';
+// Sharp 모듈을 동적으로 import하여 Vercel 배포 문제 해결
 import { isAdmin } from '@/lib/auth';
 
 export async function GET() {
@@ -120,11 +120,18 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
     
     if (isHeic) {
-      // HEIC를 JPEG로 변환
-      const convertedBuffer = await sharp(buffer)
-        .jpeg({ quality: 85 })
-        .toBuffer();
-      await writeFile(filePath, convertedBuffer);
+      try {
+        // HEIC를 JPEG로 변환 (Sharp 동적 import)
+        const sharp = (await import('sharp')).default;
+        const convertedBuffer = await sharp(buffer)
+          .jpeg({ quality: 85 })
+          .toBuffer();
+        await writeFile(filePath, convertedBuffer);
+      } catch (error) {
+        console.error('Sharp module error:', error);
+        // Sharp 실패 시 원본 파일 저장
+        await writeFile(filePath, buffer);
+      }
     } else {
       // 일반 이미지는 그대로 저장
       await writeFile(filePath, buffer);

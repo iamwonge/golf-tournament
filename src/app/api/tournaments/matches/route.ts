@@ -5,6 +5,7 @@ import { isAdmin } from '@/lib/auth';
 // 모든 매치 조회 API
 export async function GET(request: NextRequest) {
   try {
+    console.log('Fetching matches from database...');
     const matches = await prisma.tournamentMatch.findMany({
       include: {
         tournament: true,
@@ -16,6 +17,8 @@ export async function GET(request: NextRequest) {
         { matchNumber: 'asc' }
       ]
     });
+    
+    console.log(`Found ${matches.length} matches in database`);
 
     // 프론트엔드 형식에 맞게 변환
     const formattedMatches = matches.map(match => ({
