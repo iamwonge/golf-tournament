@@ -32,14 +32,30 @@ export default function NearestPin({ loading }: NearestPinProps) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // 로컬스토리지에서 데이터 로드
-    const savedRecords = localStorage.getItem('nearest_pin_records');
-    if (savedRecords) {
-      setRecords(JSON.parse(savedRecords));
-    }
+    // 데이터베이스에서 니어핀 기록 로드
+    const loadRecords = async () => {
+      try {
+        const response = await fetch('/api/nearest');
+        if (response.ok) {
+          const data = await response.json();
+          setRecords(data);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to load nearest pin records:', error);
+      }
+      
+      // 데이터베이스 실패 시 로컬스토리지에서 로드
+      const savedRecords = localStorage.getItem('nearest_pin_records');
+      if (savedRecords) {
+        setRecords(JSON.parse(savedRecords));
+      }
+    };
+    
+    loadRecords();
   }, []);
 
-  const handleAddRecord = (e: React.FormEvent) => {
+  const handleAddRecord = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!recordForm.name || !recordForm.department || !recordForm.distance) {
@@ -50,20 +66,54 @@ export default function NearestPin({ loading }: NearestPinProps) {
     const distance = parseFloat(recordForm.distance);
     const accuracy = Math.abs(TARGET_DISTANCE - distance); // 목표 거리와의 차이 (절댓값)
 
-    const newRecord: NearestRecord = {
-      id: Date.now().toString(),
-      playerName: recordForm.name,
-      department: recordForm.department,
-      phone: recordForm.phone || undefined,
-      email: recordForm.email || undefined,
-      distance,
-      accuracy,
-      createdAt: new Date().toISOString()
-    };
+    try {
+      // 데이터베이스에 저장
+      const response = await fetch('/api/nearest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          playerName: recordForm.name,
+          department: recordForm.department,
+          phone: recordForm.phone || undefined,
+          email: recordForm.email || undefined,
+          distance,
+          accuracy: distance // 니어핀은 거리 자체가 정확도
+        })
+      });
 
-    const updatedRecords = [...records, newRecord];
-    setRecords(updatedRecords);
-    localStorage.setItem('nearest_pin_records', JSON.stringify(updatedRecords));
+      if (response.ok) {
+        const savedRecord = await response.json();
+        const updatedRecords = [...records, {
+          id: savedRecord.id,
+          playerName: savedRecord.playerName,
+          department: savedRecord.department,
+          phone: savedRecord.phone,
+          email: savedRecord.email,
+          distance: savedRecord.distance,
+          accuracy: savedRecord.accuracy,
+          createdAt: savedRecord.createdAt
+        }];
+        setRecords(updatedRecords);
+      } else {
+        throw new Error('Failed to save to database');
+      }
+    } catch (error) {
+      console.error('Database save failed, using localStorage:', error);
+      // 데이터베이스 실패 시 로컬스토리지 사용
+      const fallbackRecord: NearestRecord = {
+        id: Date.now().toString(),
+        playerName: recordForm.name,
+        department: recordForm.department,
+        phone: recordForm.phone || undefined,
+        email: recordForm.email || undefined,
+        distance,
+        accuracy: distance,
+        createdAt: new Date().toISOString()
+      };
+      const updatedRecords = [...records, fallbackRecord];
+      setRecords(updatedRecords);
+      localStorage.setItem('nearest_pin_records', JSON.stringify(updatedRecords));
+    }
     
     setRecordForm({ name: '', department: '', phone: '', email: '', distance: '' });
     alert('기록이 등록되었습니다!');
