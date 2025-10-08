@@ -15,9 +15,16 @@ interface Match {
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'BYE';
 }
 
+interface User {
+  id: string;
+  name: string;
+  department: string;
+  seedNumber?: number;
+}
+
 interface TournamentBracketProps {
   matches: Match[];
-  users: any[];
+  users: User[];
   onGenerateBracket: () => Promise<void>;
   loading: boolean;
 }

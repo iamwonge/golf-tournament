@@ -18,7 +18,7 @@ interface Tournament {
   id: string;
   name: string;
   type: string;
-  matches?: any[];
+  matches?: Match[];
 }
 
 interface Record {
@@ -321,7 +321,7 @@ export function useAdminData() {
     return records.filter(record => record.type === type);
   };
 
-  const getTournamentParticipants = (tournamentId: string) => {
+  const getTournamentParticipants = (_tournamentId: string) => {
     // 실제 구현에서는 tournament_participants 테이블이 필요하지만
     // 현재는 모든 사용자를 반환
     return users;

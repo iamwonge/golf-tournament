@@ -2,14 +2,46 @@
 
 import { motion } from 'framer-motion';
 
+interface User {
+  id: string;
+  name: string;
+  department: string;
+  phone?: string;
+  email?: string;
+}
+
+interface Tournament {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  matches?: Match[];
+}
+
+interface Match {
+  id: string;
+  player1?: User;
+  player2?: User;
+  winnerId?: string;
+  status: string;
+}
+
+interface Record {
+  id: string;
+  playerName: string;
+  department: string;
+  distance?: number;
+  accuracy?: number;
+}
+
 interface DashboardTabProps {
-  users: any[];
-  tournaments: any[];
-  records: any[];
+  users: User[];
+  tournaments: Tournament[];
+  records: Record[];
 }
 
 export default function DashboardTab({ users, tournaments, records }: DashboardTabProps) {
-  const getTournamentParticipants = (tournamentId: string) => {
+  const getTournamentParticipants = (_tournamentId: string) => {
     return users; // 임시로 모든 사용자 반환
   };
 
@@ -46,7 +78,7 @@ export default function DashboardTab({ users, tournaments, records }: DashboardT
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-blue-700">완료 경기:</span>
-              <span className="font-semibold text-blue-800">{getMatchesWithUsers('1').filter((m: any) => m.status === 'COMPLETED').length}경기</span>
+              <span className="font-semibold text-blue-800">{getMatchesWithUsers('1').filter((m: Match) => m.status === 'COMPLETED').length}경기</span>
             </div>
           </div>
         </motion.div>
