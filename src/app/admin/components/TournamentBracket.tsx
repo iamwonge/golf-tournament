@@ -20,6 +20,7 @@ interface User {
   name: string;
   department: string;
   seedNumber?: number;
+  isBye?: boolean;
 }
 
 interface TournamentBracketProps {

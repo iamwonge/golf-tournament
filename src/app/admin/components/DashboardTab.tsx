@@ -8,6 +8,8 @@ interface User {
   department: string;
   phone?: string;
   email?: string;
+  isBye?: boolean;
+  seedNumber?: number;
 }
 
 interface Tournament {
