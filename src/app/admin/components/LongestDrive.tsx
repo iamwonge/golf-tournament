@@ -36,16 +36,11 @@ export default function LongestDrive({ loading }: LongestDriveProps) {
         if (response.ok) {
           const data = await response.json();
           setRecords(data);
-          return;
+        } else {
+          console.error('Failed to load longest records');
         }
       } catch (error) {
-        console.error('Failed to load longest drive records:', error);
-      }
-      
-      // 데이터베이스 실패 시 로컬스토리지에서 로드
-      const savedRecords = localStorage.getItem('longest_drive_records');
-      if (savedRecords) {
-        setRecords(JSON.parse(savedRecords));
+        console.error('Error loading longest records:', error);
       }
     };
     
@@ -62,6 +57,7 @@ export default function LongestDrive({ loading }: LongestDriveProps) {
 
     const distance = parseFloat(recordForm.distance);
     
+    setSubmitting(true);
     try {
       // 데이터베이스에 저장
       const response = await fetch('/api/longest', {
@@ -88,36 +84,38 @@ export default function LongestDrive({ loading }: LongestDriveProps) {
           createdAt: savedRecord.createdAt
         }].sort((a, b) => b.distance - a.distance);
         setRecords(updatedRecords);
+        alert('기록이 등록되었습니다!');
       } else {
-        throw new Error('Failed to save to database');
+        alert('기록 등록에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
-      console.error('Database save failed, using localStorage:', error);
-      // 데이터베이스 실패 시 로컬스토리지 사용
-      const fallbackRecord: LongestRecord = {
-        id: Date.now().toString(),
-        playerName: recordForm.name,
-        department: recordForm.department,
-        phone: recordForm.phone || undefined,
-        email: recordForm.email || undefined,
-        distance,
-        createdAt: new Date().toISOString()
-      };
-      const updatedRecords = [...records, fallbackRecord].sort((a, b) => b.distance - a.distance);
-      setRecords(updatedRecords);
-      localStorage.setItem('longest_drive_records', JSON.stringify(updatedRecords));
+      console.error('Error saving longest record:', error);
+      alert('기록 등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setSubmitting(false);
     }
     
     setRecordForm({ name: '', department: '', phone: '', email: '', distance: '' });
-    alert('기록이 등록되었습니다!');
   };
 
-  const handleDeleteRecord = (recordId: string) => {
+  const handleDeleteRecord = async (recordId: string) => {
     if (confirm('정말로 이 기록을 삭제하시겠습니까?')) {
-      const updatedRecords = records.filter(record => record.id !== recordId);
-      setRecords(updatedRecords);
-      localStorage.setItem('longest_drive_records', JSON.stringify(updatedRecords));
-      alert('기록이 삭제되었습니다.');
+      try {
+        const response = await fetch(`/api/longest/${recordId}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          const updatedRecords = records.filter(record => record.id !== recordId);
+          setRecords(updatedRecords);
+          alert('기록이 삭제되었습니다.');
+        } else {
+          alert('기록 삭제에 실패했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('Error deleting longest record:', error);
+        alert('기록 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 

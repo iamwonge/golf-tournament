@@ -20,18 +20,25 @@ export default function PuttingPage() {
   const [records, setRecords] = useState<PuttingRecord[]>([]);
 
   useEffect(() => {
-    // 관리자 페이지와 동일한 로컬스토리지 사용
-    const loadRecords = () => {
-      const savedRecords = localStorage.getItem('putting_game_records');
-      if (savedRecords) {
-        setRecords(JSON.parse(savedRecords));
+    // 데이터베이스에서 퍼팅 기록 로드
+    const loadRecords = async () => {
+      try {
+        const response = await fetch('/api/putting');
+        if (response.ok) {
+          const data = await response.json();
+          setRecords(data);
+        } else {
+          console.error('Failed to load putting records');
+        }
+      } catch (error) {
+        console.error('Error loading putting records:', error);
       }
     };
 
     loadRecords();
     
-    // 1초마다 데이터 새로고침 (실시간 연동)
-    const interval = setInterval(loadRecords, 1000);
+    // 5초마다 데이터 새로고침 (실시간 연동)
+    const interval = setInterval(loadRecords, 5000);
     
     return () => clearInterval(interval);
   }, []);

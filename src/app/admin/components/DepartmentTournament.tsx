@@ -50,14 +50,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         console.error('Failed to load matches from database:', error);
       }
       
-      // 데이터베이스에 데이터가 없으면 로컬스토리지에서 복구 시도
-      const savedMatches = localStorage.getItem('department_tournament_matches');
-      if (savedMatches) {
-        const localMatches = JSON.parse(savedMatches);
-        setMatches(localMatches);
-        saveMatchesToDatabase(localMatches);
-        return;
-      }
+      // 데이터베이스에 데이터가 없으면 초기 구조 생성
       
       // 로컬스토리지도 없으면 초기 16강 토너먼트 구조 생성
       const initialMatches: Match[] = [

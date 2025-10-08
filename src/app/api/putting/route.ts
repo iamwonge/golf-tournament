@@ -28,15 +28,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { playerName, department, phone, email, distance } = body;
-    const targetDistance = 19.74;
+    const { playerName, department, phone, email, distance, accuracy } = body;
 
     if (!playerName || !department || !distance) {
       return NextResponse.json({ error: 'Player name, department, and distance are required' }, { status: 400 });
     }
 
     const actualDistance = parseFloat(distance);
-    const calculatedAccuracy = Math.abs(actualDistance - targetDistance);
+    const calculatedAccuracy = accuracy !== undefined ? parseFloat(accuracy) : Math.abs(actualDistance - 19.74);
     
     const record = await prisma.puttingRecord.create({
       data: {
