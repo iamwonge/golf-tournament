@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 참가자 정보
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  department String  // 소속 본부
+  phone     String?
+  email     String?
+  isBye     Boolean? // 기존 데이터 보존용
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 관계 (토너먼트 전용)
+  player1Matches TournamentMatch[] @relation("Player1")
+  player2Matches TournamentMatch[] @relation("Player2")
+
+  @@map("users")
+}
+
+// 토너먼트 (본부별 16강, 경영진 4강)
+model Tournament {
+  id          String          @id @default(cuid())
+  name        String          // "본부별 토너먼트", "경영진 토너먼트"
+  type        TournamentType
+  maxPlayers  Int             // 16 또는 4
+  status      TournamentStatus @default(UPCOMING)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  // 관계
+  matches TournamentMatch[]
+
+  @@map("tournaments")
+}
+
+// 토너먼트 경기
+model TournamentMatch {
+  id           String      @id @default(cuid())
+  tournamentId String
+  round        Int         // 1(16강), 2(8강), 3(4강), 4(결승)
+  matchNumber  Int         // 해당 라운드에서의 경기 번호
+  player1Id    String?
+  player2Id    String?
+  winnerId     String?
+  player1Score Int?
+  player2Score Int?
+  status       MatchStatus @default(SCHEDULED)
+  playedAt     DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // 관계
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  player1    User?      @relation("Player1", fields: [player1Id], references: [id])
+  player2    User?      @relation("Player2", fields: [player2Id], references: [id])
+
+  @@map("tournament_matches")
+}
+
+// 롱기스트 기록 (독립 참가자 정보)
+model LongestRecord {
+  id         String   @id @default(cuid())
+  // 참가자 정보 (독립)
+  playerName String   // 참가자 이름
+  department String   // 소속 본부
+  phone      String?  // 전화번호 (선택)
+  email      String?  // 이메일 (선택)
+  
+  distance   Float    // 거리 (미터)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("longest_records")
+}
+
+// 퍼팅게임 기록 (19.74m 정확도, 독립 참가자 정보)
+model PuttingRecord {
+  id         String   @id @default(cuid())
+  // 참가자 정보 (독립)
+  playerName String   // 참가자 이름
+  department String   // 소속 본부
+  phone      String?  // 전화번호 (선택)
+  email      String?  // 이메일 (선택)
+  
+  distance   Float    // 실제 거리 (미터)
+  accuracy   Float    // 19.74m와의 차이 (절댓값)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("putting_records")
+}
+
+// 니어핀 기록 (핀까지 거리, 독립 참가자 정보)
+model NearestRecord {
+  id         String   @id @default(cuid())
+  // 참가자 정보 (독립)
+  playerName String   // 참가자 이름
+  department String   // 소속 본부
+  phone      String?  // 전화번호 (선택)
+  email      String?  // 이메일 (선택)
+  
+  distance   Float    // 핀까지의 거리 (미터)
+  accuracy   Float    // 정확도 (거리 자체)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("nearest_records")
+}
+
+// 열거형 정의
+enum TournamentType {
+  DEPARTMENT // 본부별
+  EXECUTIVE  // 경영진
+}
+
+enum TournamentStatus {
+  UPCOMING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// 대회 사진
+model Photo {
+  id          String   @id @default(cuid())
+  title       String   // 사진 제목
+  description String?  // 사진 설명
+  fileName    String   // 파일명
+  filePath    String   // 파일 경로
+  fileSize    Int      // 파일 크기
+  mimeType    String   // MIME 타입
+  uploadedBy  String?  // 업로드한 관리자
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("photos")
+}
+
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  BYE        // 부전승
+}
