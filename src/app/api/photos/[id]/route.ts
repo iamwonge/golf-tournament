@@ -6,8 +6,9 @@ import { isAdmin } from '@/lib/auth';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   // 관리자 권한 확인
   if (!isAdmin(request)) {
     return NextResponse.json(
@@ -18,7 +19,7 @@ export async function DELETE(
 
   try {
     const photo = await prisma.photo.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
 
     if (!photo) {
@@ -35,7 +36,7 @@ export async function DELETE(
 
     // 데이터베이스에서 삭제
     await prisma.photo.delete({
-      where: { id: params.id }
+      where: { id }
     });
 
     return NextResponse.json({ success: true });
@@ -47,8 +48,9 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   // 관리자 권한 확인
   if (!isAdmin(request)) {
     return NextResponse.json(
@@ -61,7 +63,7 @@ export async function PUT(
     const { title, description } = await request.json();
 
     const photo = await prisma.photo.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title,
         description
