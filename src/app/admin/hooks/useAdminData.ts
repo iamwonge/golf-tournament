@@ -14,6 +14,18 @@ interface User {
   updatedAt: string;
 }
 
+interface Match {
+  id: string;
+  round: number;
+  matchNumber: number;
+  player1?: User;
+  player2?: User;
+  player1Score?: number;
+  player2Score?: number;
+  winnerId?: string;
+  status: string;
+}
+
 interface Tournament {
   id: string;
   name: string;
