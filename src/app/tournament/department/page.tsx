@@ -42,11 +42,6 @@ export default function DepartmentTournamentPage() {
     };
 
     loadMatches();
-    
-    // 5초마다 데이터 새로고침 (실시간 연동)
-    const interval = setInterval(loadMatches, 5000);
-    
-    return () => clearInterval(interval);
   }, []);
 
   const getMatchesByRound = (round: number) => {
