@@ -58,8 +58,8 @@ export default function NearestPin({ loading }: NearestPinProps) {
       return;
     }
 
-    const distance = parseFloat(recordForm.distance);
-    const accuracy = Math.abs(TARGET_DISTANCE - distance); // 목표 거리와의 차이 (절댓값)
+    const reachedDistance = parseFloat(recordForm.distance); // 실제 도달한 거리
+    const distanceToPin = Math.abs(TARGET_DISTANCE - reachedDistance); // 핀까지의 거리 (절댓값)
 
     setSubmitting(true);
     try {
@@ -72,8 +72,9 @@ export default function NearestPin({ loading }: NearestPinProps) {
           department: recordForm.department,
           phone: recordForm.phone || undefined,
           email: recordForm.email || undefined,
-          distance,
-          accuracy: distance // 니어핀은 거리 자체가 정확도
+          distance: distanceToPin, // 핀까지의 거리
+          accuracy: distanceToPin, // 니어핀은 핀까지의 거리가 정확도
+          reachedDistance: reachedDistance // 실제 도달한 거리도 저장
         })
       });
 
@@ -189,9 +190,9 @@ export default function NearestPin({ loading }: NearestPinProps) {
           </div>
           <div className="text-sm text-red-700">
             • 목표: <strong>{TARGET_DISTANCE}m 지점의 핀에 최대한 가깝게</strong><br/>
-            • 볼이 멈춘 지점에서 핀까지의 거리를 입력하세요<br/>
-            • 정확도 = 핀까지의 거리 (절댓값)<br/>
-            • 거리가 짧을수록 좋은 기록입니다
+            • 볼이 실제로 도달한 거리를 입력하세요 (예: 48m 도달 시 48 입력)<br/>
+            • 핀까지의 거리 = |{TARGET_DISTANCE}m - 도달거리| (자동 계산)<br/>
+            • 핀까지의 거리가 짧을수록 좋은 기록입니다
           </div>
         </div>
         
@@ -233,7 +234,7 @@ export default function NearestPin({ loading }: NearestPinProps) {
           <input
             type="number"
             step="0.1"
-            placeholder="핀까지의 거리 (m) *"
+            placeholder="도달한 거리 (m) * - 목표: 51m"
             value={recordForm.distance}
             onChange={(e) => setRecordForm({ ...recordForm, distance: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"

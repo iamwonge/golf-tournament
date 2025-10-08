@@ -66,7 +66,7 @@ export default function NearestPage() {
         <h1 className="text-3xl font-bold text-red-800 mb-2">
           🎪 니어핀 챌린지
         </h1>
-        <p className="text-gray-600">51m 목표 지점에 최대한 근접하는 어프로치 샷 정확도 경쟁!</p>
+        <p className="text-gray-600">51m 목표 지점의 핀에 최대한 가깝게! 핀까지의 거리가 짧을수록 승리!</p>
       </div>
 
       {/* 통계 카드 */}
@@ -127,7 +127,7 @@ export default function NearestPage() {
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-xs font-semibold text-white drop-shadow">
-                    {record.distance.toFixed(2)}m (오차: ±{record.accuracy.toFixed(2)}m)
+                    핀까지 {record.distance.toFixed(2)}m
                   </span>
                 </div>
               </div>
@@ -167,8 +167,8 @@ export default function NearestPage() {
                 <th className="text-left py-3 px-4">순위</th>
                 <th className="text-left py-3 px-4">참가자</th>
                 <th className="text-left py-3 px-4">소속</th>
-                <th className="text-right py-3 px-4">거리</th>
-                <th className="text-right py-3 px-4">정확도 (오차)</th>
+                <th className="text-right py-3 px-4">핀까지 거리</th>
+                <th className="text-right py-3 px-4">정확도</th>
                 <th className="text-right py-3 px-4">기록일</th>
               </tr>
             </thead>
@@ -197,7 +197,7 @@ export default function NearestPage() {
                     {record.distance.toFixed(2)}m
                   </td>
                   <td className={`py-3 px-4 text-right font-bold ${getAccuracyColor(record.accuracy)}`}>
-                    ±{record.accuracy.toFixed(2)}m
+                    {record.accuracy.toFixed(2)}m
                   </td>
                   <td className="py-3 px-4 text-right text-gray-500">
                     {new Date(record.createdAt).toLocaleDateString('ko-KR')}
@@ -217,8 +217,8 @@ export default function NearestPage() {
             <h4 className="font-semibold mb-2">게임 방식</h4>
             <ul className="space-y-1">
               <li>• 목표: 51m 지점의 핀에 최대한 가깝게 공을 보내기</li>
-              <li>• 목표 거리에 가까울수록 좋은 기록</li>
-              <li>• 오차 = |목표거리 - 실제거리|</li>
+              <li>• 실제 도달한 거리를 측정 (예: 48m 도달)</li>
+              <li>• 핀까지 거리 = |51m - 도달거리| (예: |51-48| = 3m)</li>
             </ul>
           </div>
           <div>
