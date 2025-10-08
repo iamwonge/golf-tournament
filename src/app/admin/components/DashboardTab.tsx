@@ -17,6 +17,11 @@ interface Tournament {
   name: string;
   type: string;
   status: string;
+  maxPlayers?: number;
+  startDate?: string;
+  endDate?: string;
+  createdAt?: string;
+  updatedAt?: string;
   matches?: Match[];
 }
 
