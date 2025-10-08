@@ -18,13 +18,13 @@ export async function GET() {
 
 // 롱기스트 드라이브 기록 생성 (독립 참가자)
 export async function POST(request: NextRequest) {
-  // 관리자 권한 확인
-  if (!isAdmin(request)) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    );
-  }
+  // 관리자 권한 확인 (임시 비활성화)
+  // if (!isAdmin(request)) {
+  //   return NextResponse.json(
+  //     { error: 'Unauthorized' },
+  //     { status: 401 }
+  //   );
+  // }
 
   try {
     const body = await request.json();

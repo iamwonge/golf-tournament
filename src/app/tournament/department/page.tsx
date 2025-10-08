@@ -21,8 +21,20 @@ export default function DepartmentTournamentPage() {
   const [matches, setMatches] = useState<Match[]>([]);
 
   useEffect(() => {
-    // 관리자 페이지와 동일한 로컬스토리지 사용
-    const loadMatches = () => {
+    // 데이터베이스에서 토너먼트 매치 데이터 로드
+    const loadMatches = async () => {
+      try {
+        const response = await fetch('/api/tournaments/matches');
+        if (response.ok) {
+          const data = await response.json();
+          setMatches(data);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to load matches from database:', error);
+      }
+      
+      // 데이터베이스 실패 시 로컬스토리지에서 로드
       const savedMatches = localStorage.getItem('department_tournament_matches');
       if (savedMatches) {
         setMatches(JSON.parse(savedMatches));
@@ -31,8 +43,8 @@ export default function DepartmentTournamentPage() {
 
     loadMatches();
     
-    // 1초마다 데이터 새로고침 (실시간 연동)
-    const interval = setInterval(loadMatches, 1000);
+    // 5초마다 데이터 새로고침 (실시간 연동)
+    const interval = setInterval(loadMatches, 5000);
     
     return () => clearInterval(interval);
   }, []);
