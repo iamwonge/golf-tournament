@@ -29,12 +29,22 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
   const [tempNames, setTempNames] = useState<{[key: string]: {player1Name: string, player1Department: string, player2Name: string, player2Department: string}}>({});
 
   useEffect(() => {
-    // 로컬스토리지에서 데이터 로드
-    const savedMatches = localStorage.getItem('department_tournament_matches');
-    if (savedMatches) {
-      setMatches(JSON.parse(savedMatches));
-    } else {
-      // 초기 16강 토너먼트 구조 생성
+    // 데이터베이스에서 토너먼트 매치 데이터 로드
+    const loadMatches = async () => {
+      try {
+        const response = await fetch('/api/tournaments/matches');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.length > 0) {
+            setMatches(data);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load matches from database:', error);
+      }
+      
+      // 데이터베이스에 데이터가 없으면 초기 16강 토너먼트 구조 생성
       const initialMatches: Match[] = [
         // 16강 (8경기)
         ...Array.from({ length: 8 }, (_, i) => ({
@@ -83,9 +93,62 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
       ];
       
       setMatches(initialMatches);
-      localStorage.setItem('department_tournament_matches', JSON.stringify(initialMatches));
-    }
+      // 초기 데이터를 데이터베이스에 저장
+      saveMatchesToDatabase(initialMatches);
+    };
+    
+    loadMatches();
   }, []);
+
+  // 데이터베이스에 매치 데이터 저장
+  const saveMatchesToDatabase = async (matchesToSave: Match[]) => {
+    try {
+      for (const match of matchesToSave) {
+        await fetch('/api/tournaments/matches', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            matchId: match.id,
+            round: match.round,
+            matchNumber: match.matchNumber,
+            player1Name: match.player1Name,
+            player1Department: match.player1Department,
+            player2Name: match.player2Name,
+            player2Department: match.player2Department,
+            player1Score: match.player1Score,
+            player2Score: match.player2Score,
+            winnerId: match.winnerId,
+            status: match.status
+          })
+        });
+      }
+    } catch (error) {
+      console.error('Failed to save matches to database:', error);
+    }
+  };
+
+  // 단일 매치 업데이트
+  const updateMatchInDatabase = async (match: Match) => {
+    try {
+      await fetch('/api/tournaments/matches', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          matchId: match.id,
+          player1Name: match.player1Name,
+          player1Department: match.player1Department,
+          player2Name: match.player2Name,
+          player2Department: match.player2Department,
+          player1Score: match.player1Score,
+          player2Score: match.player2Score,
+          winnerId: match.winnerId,
+          status: match.status
+        })
+      });
+    } catch (error) {
+      console.error('Failed to update match in database:', error);
+    }
+  };
 
   const getMatchesByRound = (round: number) => {
     return matches.filter(match => match.round === round).sort((a, b) => a.matchNumber - b.matchNumber);
@@ -138,7 +201,12 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     );
     
     setMatches(updatedMatches);
-    localStorage.setItem('department_tournament_matches', JSON.stringify(updatedMatches));
+    
+    // 데이터베이스에 업데이트된 매치 저장
+    const updatedMatch = updatedMatches.find(m => m.id === matchId);
+    if (updatedMatch) {
+      updateMatchInDatabase(updatedMatch);
+    }
     
     setEditingPlayer(null);
     setTempNames(prev => {
@@ -221,7 +289,9 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     updatedMatches = advanceWinner(currentMatch, winnerId, updatedMatches);
     
     setMatches(updatedMatches);
-    localStorage.setItem('department_tournament_matches', JSON.stringify(updatedMatches));
+    
+    // 데이터베이스에 모든 업데이트된 매치들 저장
+    saveMatchesToDatabase(updatedMatches);
     
     setEditingMatch(null);
     setTempScores(prev => {
