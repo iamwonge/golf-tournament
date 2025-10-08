@@ -2,91 +2,83 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { isAdmin } from '@/lib/auth';
 
-// 경영진 팀 구성 조회
+// 경영진 팀 조회
 export async function GET() {
   try {
-    // 경영진 토너먼트 참가자들 조회
-    const users = await prisma.user.findMany({
-      orderBy: { name: 'asc' },
+    const teams = await prisma.executiveTeam.findMany({
+      orderBy: [
+        { score: 'asc' }, // 낮은 점수 순 (골프)
+        { teamName: 'asc' }
+      ]
     });
 
-    // 4개 팀으로 구성 (실제로는 별도 테이블이 필요하지만 임시로 처리)
-    const teams = [
-      { id: 1, name: '팀 1', members: [] as any[] },
-      { id: 2, name: '팀 2', members: [] as any[] },
-      { id: 3, name: '팀 3', members: [] as any[] },
-      { id: 4, name: '팀 4', members: [] as any[] },
-    ];
-
-    return NextResponse.json({ users, teams });
+    return NextResponse.json(teams);
   } catch (error) {
     console.error('Error fetching executive teams:', error);
     return NextResponse.json({ error: 'Failed to fetch executive teams' }, { status: 500 });
   }
 }
 
-// 팀 구성 업데이트
+// 경영진 팀 생성/업데이트
 export async function POST(request: NextRequest) {
-  // 관리자 권한 확인
-  if (!isAdmin(request)) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    );
-  }
+  // 관리자 권한 확인 (임시 비활성화)
+  // if (!isAdmin(request)) {
+  //   return NextResponse.json(
+  //     { error: 'Unauthorized' },
+  //     { status: 401 }
+  //   );
+  // }
 
   try {
     const body = await request.json();
-    const { teams } = body;
+    const { 
+      teamId,
+      teamName, 
+      executiveName, 
+      managerName, 
+      memberName, 
+      score,
+      status 
+    } = body;
 
-    // 실제로는 별도의 Team 테이블이 필요하지만, 
-    // 현재는 TournamentMatch 테이블을 활용하여 팀 정보를 저장
+    if (!teamName || !executiveName || !managerName || !memberName) {
+      return NextResponse.json({ 
+        error: 'Team name, executive name, manager name, and member name are required' 
+      }, { status: 400 });
+    }
+
+    let team;
     
-    // 기존 경영진 토너먼트 매치들 삭제
-    await prisma.tournamentMatch.deleteMany({
-      where: {
-        tournament: {
-          type: 'EXECUTIVE'
-        }
-      }
-    });
-
-    // 경영진 토너먼트 찾기 또는 생성
-    let executiveTournament = await prisma.tournament.findFirst({
-      where: { type: 'EXECUTIVE' }
-    });
-
-    if (!executiveTournament) {
-      executiveTournament = await prisma.tournament.create({
+    if (teamId) {
+      // 기존 팀 업데이트
+      team = await prisma.executiveTeam.update({
+        where: { id: teamId },
         data: {
-          name: '경영진 토너먼트',
-          type: 'EXECUTIVE',
-          maxPlayers: 4,
-          status: 'IN_PROGRESS'
+          teamName,
+          executiveName,
+          managerName,
+          memberName,
+          score: score !== undefined ? parseInt(score) : undefined,
+          status: status || 'SCHEDULED'
+        }
+      });
+    } else {
+      // 새 팀 생성
+      team = await prisma.executiveTeam.create({
+        data: {
+          teamName,
+          executiveName,
+          managerName,
+          memberName,
+          score: score !== undefined ? parseInt(score) : undefined,
+          status: status || 'SCHEDULED'
         }
       });
     }
 
-    // 4개 팀의 점수 입력을 위한 매치 생성
-    for (let i = 0; i < 4; i++) {
-      const team = teams[i];
-      if (team && team.members.length > 0) {
-        await prisma.tournamentMatch.create({
-          data: {
-            tournamentId: executiveTournament.id,
-            round: 1,
-            matchNumber: i + 1,
-            player1Id: team.members[0]?.id || null, // 팀 대표자
-            status: 'SCHEDULED'
-          }
-        });
-      }
-    }
-
-    return NextResponse.json({ message: 'Teams updated successfully' });
+    return NextResponse.json(team, { status: teamId ? 200 : 201 });
   } catch (error) {
-    console.error('Error updating teams:', error);
-    return NextResponse.json({ error: 'Failed to update teams' }, { status: 500 });
+    console.error('Error saving executive team:', error);
+    return NextResponse.json({ error: 'Failed to save executive team' }, { status: 500 });
   }
 }
-

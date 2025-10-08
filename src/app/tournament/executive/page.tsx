@@ -19,18 +19,38 @@ export default function ExecutiveTournamentPage() {
   const [matches, setMatches] = useState<ExecutiveMatch[]>([]);
 
   useEffect(() => {
-    // 관리자 페이지와 동일한 로컬스토리지 사용
-    const loadMatches = () => {
-      const savedMatches = localStorage.getItem('executive_tournament_matches');
-      if (savedMatches) {
-        setMatches(JSON.parse(savedMatches));
+    // 데이터베이스에서 경영진 팀 데이터 로드
+    const loadMatches = async () => {
+      try {
+        const response = await fetch('/api/executive-teams');
+        if (response.ok) {
+          const teams = await response.json();
+          // API 데이터를 ExecutiveMatch 형식으로 변환
+          const formattedMatches: ExecutiveMatch[] = teams.map((team: any, index: number) => ({
+            id: team.id,
+            round: 1,
+            matchNumber: index + 1,
+            teamName: team.teamName,
+            executiveName: team.executiveName,
+            managerName: team.managerName,
+            memberName: team.memberName,
+            score: team.score,
+            status: team.status
+          }));
+          
+          setMatches(formattedMatches);
+        } else {
+          console.error('Failed to load executive teams');
+        }
+      } catch (error) {
+        console.error('Error loading executive teams:', error);
       }
     };
 
     loadMatches();
     
-    // 1초마다 데이터 새로고침 (실시간 연동)
-    const interval = setInterval(loadMatches, 1000);
+    // 5초마다 데이터 새로고침 (실시간 연동)
+    const interval = setInterval(loadMatches, 5000);
     
     return () => clearInterval(interval);
   }, []);

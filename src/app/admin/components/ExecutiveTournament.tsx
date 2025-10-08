@@ -27,58 +27,76 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
   const [tempTeamData, setTempTeamData] = useState<{[key: string]: {teamName: string, executiveName: string, managerName: string, memberName: string}}>({});
 
   useEffect(() => {
-    // 로컬스토리지에서 데이터 로드
-    const savedMatches = localStorage.getItem('executive_tournament_matches');
-    if (savedMatches) {
-      setMatches(JSON.parse(savedMatches));
-    } else {
-      // 4개 팀의 초기 데이터
-      const initialMatches: ExecutiveMatch[] = [
-        { 
-          id: '1', 
-          round: 1, 
-          matchNumber: 1, 
-          teamName: 'A팀',
-          executiveName: '김대표',
-          managerName: '이팀장',
-          memberName: '박사원',
-          status: 'SCHEDULED' 
-        },
-        { 
-          id: '2', 
-          round: 1, 
-          matchNumber: 2, 
-          teamName: 'B팀',
-          executiveName: '이부사장',
-          managerName: '정팀장',
-          memberName: '최사원',
-          status: 'SCHEDULED' 
-        },
-        { 
-          id: '3', 
-          round: 1, 
-          matchNumber: 3, 
-          teamName: 'C팀',
-          executiveName: '박전무',
-          managerName: '김팀장',
-          memberName: '조사원',
-          status: 'SCHEDULED' 
-        },
-        { 
-          id: '4', 
-          round: 1, 
-          matchNumber: 4, 
-          teamName: 'D팀',
-          executiveName: '정상무',
-          managerName: '윤팀장',
-          memberName: '한사원',
-          status: 'SCHEDULED' 
+    // 데이터베이스에서 경영진 팀 데이터 로드
+    const loadTeams = async () => {
+      try {
+        const response = await fetch('/api/executive-teams');
+        if (response.ok) {
+          const teams = await response.json();
+          // API 데이터를 ExecutiveMatch 형식으로 변환
+          const formattedMatches: ExecutiveMatch[] = teams.map((team: any, index: number) => ({
+            id: team.id,
+            round: 1,
+            matchNumber: index + 1,
+            teamName: team.teamName,
+            executiveName: team.executiveName,
+            managerName: team.managerName,
+            memberName: team.memberName,
+            score: team.score,
+            status: team.status
+          }));
+          
+          if (formattedMatches.length > 0) {
+            setMatches(formattedMatches);
+            return;
+          }
         }
+      } catch (error) {
+        console.error('Failed to load executive teams:', error);
+      }
+      
+      // 데이터베이스에 데이터가 없으면 초기 4개 팀 생성
+      const initialTeams = [
+        { teamName: 'A팀', executiveName: '김대표', managerName: '이팀장', memberName: '박사원' },
+        { teamName: 'B팀', executiveName: '이부사장', managerName: '정팀장', memberName: '최사원' },
+        { teamName: 'C팀', executiveName: '박전무', managerName: '김팀장', memberName: '조사원' },
+        { teamName: 'D팀', executiveName: '정상무', managerName: '윤팀장', memberName: '한사원' }
       ];
       
-      setMatches(initialMatches);
-      localStorage.setItem('executive_tournament_matches', JSON.stringify(initialMatches));
-    }
+      // 데이터베이스에 초기 팀들 생성
+      const createdTeams = await Promise.all(
+        initialTeams.map(async (team) => {
+          try {
+            const response = await fetch('/api/executive-teams', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(team)
+            });
+            return response.ok ? await response.json() : null;
+          } catch (error) {
+            console.error('Failed to create initial team:', error);
+            return null;
+          }
+        })
+      );
+      
+      const validTeams = createdTeams.filter(team => team !== null);
+      const formattedMatches: ExecutiveMatch[] = validTeams.map((team: any, index: number) => ({
+        id: team.id,
+        round: 1,
+        matchNumber: index + 1,
+        teamName: team.teamName,
+        executiveName: team.executiveName,
+        managerName: team.managerName,
+        memberName: team.memberName,
+        score: team.score,
+        status: team.status
+      }));
+      
+      setMatches(formattedMatches);
+    };
+    
+    loadTeams();
   }, []);
 
   const getStatusColor = (status: string) => {
@@ -109,24 +127,45 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
   };
 
   // 팀 정보 저장 핸들러
-  const handleSaveTeamData = (matchId: string) => {
+  const handleSaveTeamData = async (matchId: string) => {
     const tempData = tempTeamData[matchId];
     if (!tempData) return;
 
-    const updatedMatches = matches.map(match => 
-      match.id === matchId 
-        ? { 
-            ...match, 
-            teamName: tempData.teamName || match.teamName,
-            executiveName: tempData.executiveName || match.executiveName,
-            managerName: tempData.managerName || match.managerName,
-            memberName: tempData.memberName || match.memberName
-          }
-        : match
-    );
-    
-    setMatches(updatedMatches);
-    localStorage.setItem('executive_tournament_matches', JSON.stringify(updatedMatches));
+    try {
+      const response = await fetch(`/api/executive-teams/${matchId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teamName: tempData.teamName,
+          executiveName: tempData.executiveName,
+          managerName: tempData.managerName,
+          memberName: tempData.memberName
+        })
+      });
+
+      if (response.ok) {
+        const updatedTeam = await response.json();
+        const updatedMatches = matches.map(match => 
+          match.id === matchId 
+            ? { 
+                ...match, 
+                teamName: updatedTeam.teamName,
+                executiveName: updatedTeam.executiveName,
+                managerName: updatedTeam.managerName,
+                memberName: updatedTeam.memberName
+              }
+            : match
+        );
+        
+        setMatches(updatedMatches);
+        alert('팀 정보가 저장되었습니다!');
+      } else {
+        alert('팀 정보 저장에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('Error saving team data:', error);
+      alert('팀 정보 저장 중 오류가 발생했습니다.');
+    }
     
     setEditingTeam(null);
     setTempTeamData(prev => {
@@ -134,8 +173,6 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
       delete newData[matchId];
       return newData;
     });
-    
-    alert('팀 정보가 저장되었습니다!');
   };
 
   // 점수 입력 핸들러
@@ -148,18 +185,37 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
   };
 
   // 점수 저장 핸들러
-  const handleSaveScore = (matchId: string) => {
+  const handleSaveScore = async (matchId: string) => {
     const score = tempScores[matchId];
     if (score === undefined) return;
     
-    const updatedMatches = matches.map(match => 
-      match.id === matchId 
-        ? { ...match, score, status: 'COMPLETED' as const }
-        : match
-    );
-    
-    setMatches(updatedMatches);
-    localStorage.setItem('executive_tournament_matches', JSON.stringify(updatedMatches));
+    try {
+      const response = await fetch(`/api/executive-teams/${matchId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          score: score,
+          status: 'COMPLETED'
+        })
+      });
+
+      if (response.ok) {
+        const updatedTeam = await response.json();
+        const updatedMatches = matches.map(match => 
+          match.id === matchId 
+            ? { ...match, score: updatedTeam.score, status: updatedTeam.status }
+            : match
+        );
+        
+        setMatches(updatedMatches);
+        alert('점수가 저장되었습니다!');
+      } else {
+        alert('점수 저장에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('Error saving score:', error);
+      alert('점수 저장 중 오류가 발생했습니다.');
+    }
     
     setEditingMatch(null);
     setTempScores(prev => {
@@ -167,8 +223,6 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
       delete newScores[matchId];
       return newScores;
     });
-    
-    alert('점수가 저장되었습니다!');
   };
 
   return (

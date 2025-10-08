@@ -125,6 +125,21 @@ model NearestRecord {
   @@map("nearest_records")
 }
 
+// 경영진 팀 (4팀 매치게임)
+model ExecutiveTeam {
+  id            String   @id @default(cuid())
+  teamName      String   // "A팀", "B팀", "C팀", "D팀"
+  executiveName String   // 경영진 이름
+  managerName   String   // 팀장급 이름
+  memberName    String   // 팀원급 이름
+  score         Int?     // 최종 타수
+  status        ExecutiveStatus @default(SCHEDULED)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("executive_teams")
+}
+
 // 열거형 정의
 enum TournamentType {
   DEPARTMENT // 본부별
@@ -158,4 +173,10 @@ enum MatchStatus {
   IN_PROGRESS
   COMPLETED
   BYE        // 부전승
+}
+
+enum ExecutiveStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
 }
