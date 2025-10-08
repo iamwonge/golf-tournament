@@ -36,7 +36,13 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         if (response.ok) {
           const data = await response.json();
           if (data.length > 0) {
-            setMatches(data);
+            // 누락된 라운드 확인 및 생성
+            const completeMatches = ensureAllRounds(data);
+            setMatches(completeMatches);
+            if (completeMatches.length > data.length) {
+              // 누락된 라운드가 있었다면 데이터베이스에 저장
+              saveMatchesToDatabase(completeMatches);
+            }
             return;
           }
         }
@@ -44,7 +50,16 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         console.error('Failed to load matches from database:', error);
       }
       
-      // 데이터베이스에 데이터가 없으면 초기 16강 토너먼트 구조 생성
+      // 데이터베이스에 데이터가 없으면 로컬스토리지에서 복구 시도
+      const savedMatches = localStorage.getItem('department_tournament_matches');
+      if (savedMatches) {
+        const localMatches = JSON.parse(savedMatches);
+        setMatches(localMatches);
+        saveMatchesToDatabase(localMatches);
+        return;
+      }
+      
+      // 로컬스토리지도 없으면 초기 16강 토너먼트 구조 생성
       const initialMatches: Match[] = [
         // 16강 (8경기)
         ...Array.from({ length: 8 }, (_, i) => ({
@@ -57,7 +72,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           player2Department: `본부 ${i * 2 + 2}`,
           status: 'SCHEDULED' as const
         })),
-        // 8강 (4경기)
+        // 8강 (4경기) - 항상 생성
         ...Array.from({ length: 4 }, (_, i) => ({
           id: `r2_m${i + 1}`,
           round: 2,
@@ -68,7 +83,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           player2Department: '16강 결과 대기',
           status: 'SCHEDULED' as const
         })),
-        // 4강 (2경기)
+        // 4강 (2경기) - 항상 생성
         ...Array.from({ length: 2 }, (_, i) => ({
           id: `r3_m${i + 1}`,
           round: 3,
@@ -79,7 +94,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           player2Department: '8강 결과 대기',
           status: 'SCHEDULED' as const
         })),
-        // 결승 (1경기)
+        // 결승 (1경기) - 항상 생성
         {
           id: 'r4_m1',
           round: 4,
@@ -99,6 +114,63 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     
     loadMatches();
   }, []);
+
+  // 모든 라운드가 있는지 확인하고 누락된 라운드 생성
+  const ensureAllRounds = (matches: Match[]): Match[] => {
+    const existingRounds = new Set(matches.map(m => m.round));
+    const missingMatches: Match[] = [];
+
+    // 8강 (라운드 2) 확인
+    if (!existingRounds.has(2)) {
+      missingMatches.push(
+        ...Array.from({ length: 4 }, (_, i) => ({
+          id: `r2_m${i + 1}`,
+          round: 2,
+          matchNumber: i + 1,
+          player1Name: '대기중',
+          player1Department: '16강 결과 대기',
+          player2Name: '대기중',
+          player2Department: '16강 결과 대기',
+          status: 'SCHEDULED' as const
+        }))
+      );
+    }
+
+    // 4강 (라운드 3) 확인
+    if (!existingRounds.has(3)) {
+      missingMatches.push(
+        ...Array.from({ length: 2 }, (_, i) => ({
+          id: `r3_m${i + 1}`,
+          round: 3,
+          matchNumber: i + 1,
+          player1Name: '대기중',
+          player1Department: '8강 결과 대기',
+          player2Name: '대기중',
+          player2Department: '8강 결과 대기',
+          status: 'SCHEDULED' as const
+        }))
+      );
+    }
+
+    // 결승 (라운드 4) 확인
+    if (!existingRounds.has(4)) {
+      missingMatches.push({
+        id: 'r4_m1',
+        round: 4,
+        matchNumber: 1,
+        player1Name: '대기중',
+        player1Department: '4강 결과 대기',
+        player2Name: '대기중',
+        player2Department: '4강 결과 대기',
+        status: 'SCHEDULED' as const
+      });
+    }
+
+    return [...matches, ...missingMatches].sort((a, b) => {
+      if (a.round !== b.round) return a.round - b.round;
+      return a.matchNumber - b.matchNumber;
+    });
+  };
 
   // 데이터베이스에 매치 데이터 저장
   const saveMatchesToDatabase = async (matchesToSave: Match[]) => {
