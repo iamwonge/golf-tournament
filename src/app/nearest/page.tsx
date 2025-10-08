@@ -194,8 +194,7 @@ export default function NearestPage() {
                   <td className="py-3 px-4 font-medium">{record.playerName}</td>
                   <td className="py-3 px-4 text-gray-600">{record.department}</td>
                   <td className="py-3 px-4 text-right font-bold text-red-600">
-                    {/* 실제 도달 거리 = 51 - accuracy */}
-                    {(51 - record.accuracy).toFixed(2)}m
+                    {record.distance.toFixed(2)}m
                   </td>
                   <td className={`py-3 px-4 text-right font-bold ${getAccuracyColor(record.accuracy)}`}>
                     {record.accuracy.toFixed(2)}m
