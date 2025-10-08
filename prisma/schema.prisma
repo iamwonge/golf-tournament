@@ -21,6 +21,7 @@ model User {
   phone     String?
   email     String?
   isBye     Boolean? // 기존 데이터 보존용
+  seedNumber Int?    // 토너먼트 시드 번호
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
