@@ -448,8 +448,18 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-3 rounded text-center ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium">{match.player1Name}</div>
                       <div className="text-xs text-gray-600">{match.player1Department}</div>
-                      {match.player1Score !== undefined && (
-                        <div className="font-bold text-lg mt-1">{match.player1Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-2 py-1 border rounded text-center text-sm mt-2"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
+                        />
+                      ) : (
+                        match.player1Score !== undefined && (
+                          <div className="font-bold text-lg mt-1">{match.player1Score}</div>
+                        )
                       )}
                     </div>
                     
@@ -458,10 +468,49 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-3 rounded text-center ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium">{match.player2Name}</div>
                       <div className="text-xs text-gray-600">{match.player2Department}</div>
-                      {match.player2Score !== undefined && (
-                        <div className="font-bold text-lg mt-1">{match.player2Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-2 py-1 border rounded text-center text-sm mt-2"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
+                        />
+                      ) : (
+                        match.player2Score !== undefined && (
+                          <div className="font-bold text-lg mt-1">{match.player2Score}</div>
+                        )
                       )}
                     </div>
+                  </div>
+                  
+                  {/* 버튼들 */}
+                  <div className="mt-3 space-y-2">
+                    {editingMatch === match.id ? (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleSaveScore(match.id)}
+                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                        >
+                          점수 저장
+                        </button>
+                        <button
+                          onClick={() => setEditingMatch(null)}
+                          className="flex-1 bg-gray-600 text-white px-3 py-2 rounded text-sm hover:bg-gray-700"
+                        >
+                          취소
+                        </button>
+                      </div>
+                    ) : (
+                      match.player1Name && match.player2Name && (
+                        <button
+                          onClick={() => setEditingMatch(match.id)}
+                          className="w-full bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                        >
+                          점수 입력
+                        </button>
+                      )
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -488,8 +537,18 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-4 rounded text-center ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium text-lg">{match.player1Name}</div>
                       <div className="text-sm text-gray-600">{match.player1Department}</div>
-                      {match.player1Score !== undefined && (
-                        <div className="font-bold text-xl mt-2">{match.player1Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-3 py-2 border rounded text-center text-lg mt-2"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
+                        />
+                      ) : (
+                        match.player1Score !== undefined && (
+                          <div className="font-bold text-xl mt-2">{match.player1Score}</div>
+                        )
                       )}
                     </div>
                     
@@ -498,10 +557,49 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-4 rounded text-center ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium text-lg">{match.player2Name}</div>
                       <div className="text-sm text-gray-600">{match.player2Department}</div>
-                      {match.player2Score !== undefined && (
-                        <div className="font-bold text-xl mt-2">{match.player2Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-3 py-2 border rounded text-center text-lg mt-2"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
+                        />
+                      ) : (
+                        match.player2Score !== undefined && (
+                          <div className="font-bold text-xl mt-2">{match.player2Score}</div>
+                        )
                       )}
                     </div>
+                  </div>
+                  
+                  {/* 버튼들 */}
+                  <div className="mt-4 space-y-2">
+                    {editingMatch === match.id ? (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleSaveScore(match.id)}
+                          className="flex-1 bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700"
+                        >
+                          점수 저장
+                        </button>
+                        <button
+                          onClick={() => setEditingMatch(null)}
+                          className="flex-1 bg-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700"
+                        >
+                          취소
+                        </button>
+                      </div>
+                    ) : (
+                      match.player1Name && match.player2Name && (
+                        <button
+                          onClick={() => setEditingMatch(match.id)}
+                          className="w-full bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
+                        >
+                          점수 입력
+                        </button>
+                      )
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -528,8 +626,18 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-6 rounded-lg text-center ${match.winnerId === 'player1' ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-50'}`}>
                       <div className="font-bold text-xl">{match.player1Name}</div>
                       <div className="text-lg text-gray-600 mt-1">{match.player1Department}</div>
-                      {match.player1Score !== undefined && (
-                        <div className="font-bold text-3xl mt-3 text-purple-600">{match.player1Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-4 py-3 border-2 rounded-lg text-center text-xl mt-3 font-bold"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
+                        />
+                      ) : (
+                        match.player1Score !== undefined && (
+                          <div className="font-bold text-3xl mt-3 text-purple-600">{match.player1Score}</div>
+                        )
                       )}
                     </div>
                     
@@ -538,10 +646,49 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     <div className={`p-6 rounded-lg text-center ${match.winnerId === 'player2' ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-50'}`}>
                       <div className="font-bold text-xl">{match.player2Name}</div>
                       <div className="text-lg text-gray-600 mt-1">{match.player2Department}</div>
-                      {match.player2Score !== undefined && (
-                        <div className="font-bold text-3xl mt-3 text-purple-600">{match.player2Score}</div>
+                      
+                      {editingMatch === match.id ? (
+                        <input
+                          type="number"
+                          className="w-full px-4 py-3 border-2 rounded-lg text-center text-xl mt-3 font-bold"
+                          placeholder="점수"
+                          onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
+                        />
+                      ) : (
+                        match.player2Score !== undefined && (
+                          <div className="font-bold text-3xl mt-3 text-purple-600">{match.player2Score}</div>
+                        )
                       )}
                     </div>
+                  </div>
+                  
+                  {/* 버튼들 */}
+                  <div className="mt-6 space-y-3">
+                    {editingMatch === match.id ? (
+                      <div className="flex space-x-3">
+                        <button
+                          onClick={() => handleSaveScore(match.id)}
+                          className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-green-700 transition-colors"
+                        >
+                          🏆 점수 저장
+                        </button>
+                        <button
+                          onClick={() => setEditingMatch(null)}
+                          className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-gray-700 transition-colors"
+                        >
+                          취소
+                        </button>
+                      </div>
+                    ) : (
+                      match.player1Name && match.player2Name && (
+                        <button
+                          onClick={() => setEditingMatch(match.id)}
+                          className="w-full bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                        >
+                          🏆 결승 점수 입력
+                        </button>
+                      )
+                    )}
                   </div>
                 </motion.div>
               ))}
