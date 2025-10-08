@@ -82,27 +82,47 @@ export async function POST(request: NextRequest) {
     let player2Id = null;
 
     if (player1Name && player1Name !== '대기중') {
-      const player1 = await prisma.user.upsert({
-        where: { name: player1Name },
-        update: { department: player1Department },
-        create: { 
-          name: player1Name, 
-          department: player1Department 
+      try {
+        const player1 = await prisma.user.upsert({
+          where: { name: player1Name },
+          update: { department: player1Department },
+          create: { 
+            name: player1Name, 
+            department: player1Department 
+          }
+        });
+        player1Id = player1.id;
+      } catch (error) {
+        // 이미 존재하는 사용자 찾기
+        const existingPlayer1 = await prisma.user.findUnique({
+          where: { name: player1Name }
+        });
+        if (existingPlayer1) {
+          player1Id = existingPlayer1.id;
         }
-      });
-      player1Id = player1.id;
+      }
     }
 
     if (player2Name && player2Name !== '대기중') {
-      const player2 = await prisma.user.upsert({
-        where: { name: player2Name },
-        update: { department: player2Department },
-        create: { 
-          name: player2Name, 
-          department: player2Department 
+      try {
+        const player2 = await prisma.user.upsert({
+          where: { name: player2Name },
+          update: { department: player2Department },
+          create: { 
+            name: player2Name, 
+            department: player2Department 
+          }
+        });
+        player2Id = player2.id;
+      } catch (error) {
+        // 이미 존재하는 사용자 찾기
+        const existingPlayer2 = await prisma.user.findUnique({
+          where: { name: player2Name }
+        });
+        if (existingPlayer2) {
+          player2Id = existingPlayer2.id;
         }
-      });
-      player2Id = player2.id;
+      }
     }
 
     // 매치 생성 또는 업데이트
@@ -162,27 +182,47 @@ export async function PUT(request: NextRequest) {
     let player2Id = null;
 
     if (player1Name && player1Name !== '대기중') {
-      const player1 = await prisma.user.upsert({
-        where: { name: player1Name },
-        update: { department: player1Department },
-        create: { 
-          name: player1Name, 
-          department: player1Department 
+      try {
+        const player1 = await prisma.user.upsert({
+          where: { name: player1Name },
+          update: { department: player1Department },
+          create: { 
+            name: player1Name, 
+            department: player1Department 
+          }
+        });
+        player1Id = player1.id;
+      } catch (error) {
+        // 이미 존재하는 사용자 찾기
+        const existingPlayer1 = await prisma.user.findUnique({
+          where: { name: player1Name }
+        });
+        if (existingPlayer1) {
+          player1Id = existingPlayer1.id;
         }
-      });
-      player1Id = player1.id;
+      }
     }
 
     if (player2Name && player2Name !== '대기중') {
-      const player2 = await prisma.user.upsert({
-        where: { name: player2Name },
-        update: { department: player2Department },
-        create: { 
-          name: player2Name, 
-          department: player2Department 
+      try {
+        const player2 = await prisma.user.upsert({
+          where: { name: player2Name },
+          update: { department: player2Department },
+          create: { 
+            name: player2Name, 
+            department: player2Department 
+          }
+        });
+        player2Id = player2.id;
+      } catch (error) {
+        // 이미 존재하는 사용자 찾기
+        const existingPlayer2 = await prisma.user.findUnique({
+          where: { name: player2Name }
+        });
+        if (existingPlayer2) {
+          player2Id = existingPlayer2.id;
         }
-      });
-      player2Id = player2.id;
+      }
     }
 
     const updatedMatch = await prisma.tournamentMatch.update({

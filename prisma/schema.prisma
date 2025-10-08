@@ -16,7 +16,7 @@ datasource db {
 // 참가자 정보
 model User {
   id        String   @id @default(cuid())
-  name      String
+  name      String   @unique
   department String  // 소속 본부
   phone     String?
   email     String?
