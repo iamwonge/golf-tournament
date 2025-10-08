@@ -5,11 +5,12 @@ import { isAdmin } from '@/lib/auth';
 // 특정 경영진 팀 조회
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const team = await prisma.executiveTeam.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
 
     if (!team) {
@@ -26,8 +27,9 @@ export async function GET(
 // 특정 경영진 팀 업데이트
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   // 관리자 권한 확인 (임시 비활성화)
   // if (!isAdmin(request)) {
   //   return NextResponse.json(
@@ -41,7 +43,7 @@ export async function PUT(
     const { teamName, executiveName, managerName, memberName, score, status } = body;
 
     const team = await prisma.executiveTeam.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(teamName && { teamName }),
         ...(executiveName && { executiveName }),
@@ -62,8 +64,9 @@ export async function PUT(
 // 특정 경영진 팀 삭제
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   // 관리자 권한 확인 (임시 비활성화)
   // if (!isAdmin(request)) {
   //   return NextResponse.json(
@@ -74,7 +77,7 @@ export async function DELETE(
 
   try {
     await prisma.executiveTeam.delete({
-      where: { id: params.id }
+      where: { id }
     });
 
     return NextResponse.json({ message: 'Team deleted successfully' });
