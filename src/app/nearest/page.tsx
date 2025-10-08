@@ -167,7 +167,7 @@ export default function NearestPage() {
                 <th className="text-left py-3 px-4">순위</th>
                 <th className="text-left py-3 px-4">참가자</th>
                 <th className="text-left py-3 px-4">소속</th>
-                <th className="text-right py-3 px-4">핀까지 거리</th>
+                <th className="text-right py-3 px-4">거리</th>
                 <th className="text-right py-3 px-4">정확도</th>
                 <th className="text-right py-3 px-4">기록일</th>
               </tr>
@@ -194,7 +194,8 @@ export default function NearestPage() {
                   <td className="py-3 px-4 font-medium">{record.playerName}</td>
                   <td className="py-3 px-4 text-gray-600">{record.department}</td>
                   <td className="py-3 px-4 text-right font-bold text-red-600">
-                    {record.distance.toFixed(2)}m
+                    {/* 실제 도달 거리 = 51 - accuracy */}
+                    {(51 - record.accuracy).toFixed(2)}m
                   </td>
                   <td className={`py-3 px-4 text-right font-bold ${getAccuracyColor(record.accuracy)}`}>
                     {record.accuracy.toFixed(2)}m

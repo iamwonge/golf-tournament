@@ -72,9 +72,8 @@ export default function NearestPin({ loading }: NearestPinProps) {
           department: recordForm.department,
           phone: recordForm.phone || undefined,
           email: recordForm.email || undefined,
-          distance: distanceToPin, // 핀까지의 거리
-          accuracy: distanceToPin, // 니어핀은 핀까지의 거리가 정확도
-          reachedDistance: reachedDistance // 실제 도달한 거리도 저장
+          distance: reachedDistance, // 실제 도달한 거리
+          accuracy: distanceToPin, // 핀까지의 거리 (정확도)
         })
       });
 
@@ -272,7 +271,7 @@ export default function NearestPin({ loading }: NearestPinProps) {
                 <th className="text-left py-3 px-4">참가자</th>
                 <th className="text-left py-3 px-4">소속</th>
                 <th className="text-right py-3 px-4">거리</th>
-                <th className="text-right py-3 px-4">핀까지 거리 (오차)</th>
+                <th className="text-right py-3 px-4">정확도 (핀까지)</th>
                 <th className="text-right py-3 px-4">기록일</th>
                 <th className="text-center py-3 px-4">액션</th>
               </tr>
@@ -313,10 +312,10 @@ export default function NearestPin({ loading }: NearestPinProps) {
                           accuracy <= 5.0 ? 'text-orange-600' :
                           'text-red-600'
                         }`}>
-                          ±{accuracy.toFixed(2)}m
+                          {accuracy.toFixed(2)}m
                         </div>
                         <div className="text-xs text-gray-500">
-                          목표: {TARGET_DISTANCE}m
+                          핀까지 거리
                         </div>
                       </td>
                       <td className="py-3 px-4 text-right text-gray-500">

@@ -28,13 +28,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { playerName, department, phone, email, distance, reachedDistance } = body;
+    const { playerName, department, phone, email, distance, accuracy } = body;
 
-    if (!playerName || !department || !distance) {
-      return NextResponse.json({ error: 'Player name, department, and distance are required' }, { status: 400 });
+    if (!playerName || !department || !distance || accuracy === undefined) {
+      return NextResponse.json({ error: 'Player name, department, distance, and accuracy are required' }, { status: 400 });
     }
 
-    const distanceToPin = parseFloat(distance); // 핀까지의 거리 (이미 계산된 값)
+    const reachedDistance = parseFloat(distance); // 실제 도달한 거리
+    const distanceToPin = parseFloat(accuracy); // 핀까지의 거리 (정확도)
     
     const record = await prisma.nearestRecord.create({
       data: {
@@ -42,8 +43,8 @@ export async function POST(request: NextRequest) {
         department,
         phone: phone || null,
         email: email || null,
-        distance: distanceToPin, // 핀까지의 거리
-        accuracy: distanceToPin, // 니어핀은 핀까지의 거리가 정확도
+        distance: reachedDistance, // 실제 도달한 거리
+        accuracy: distanceToPin, // 핀까지의 거리 (정확도)
       }
     });
 
