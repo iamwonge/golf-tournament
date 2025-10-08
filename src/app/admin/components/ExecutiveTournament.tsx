@@ -25,6 +25,13 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
   const [editingTeam, setEditingTeam] = useState<string | null>(null);
   const [tempScores, setTempScores] = useState<{[key: string]: number}>({});
   const [tempTeamData, setTempTeamData] = useState<{[key: string]: {teamName: string, executiveName: string, managerName: string, memberName: string}}>({});
+  const [newTeamForm, setNewTeamForm] = useState({
+    teamName: '',
+    executiveName: '',
+    managerName: '',
+    memberName: ''
+  });
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     // 데이터베이스에서 경영진 팀 데이터 로드
@@ -55,45 +62,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
         console.error('Failed to load executive teams:', error);
       }
       
-      // 데이터베이스에 데이터가 없으면 초기 4개 팀 생성
-      const initialTeams = [
-        { teamName: 'A팀', executiveName: '김대표', managerName: '이팀장', memberName: '박사원' },
-        { teamName: 'B팀', executiveName: '이부사장', managerName: '정팀장', memberName: '최사원' },
-        { teamName: 'C팀', executiveName: '박전무', managerName: '김팀장', memberName: '조사원' },
-        { teamName: 'D팀', executiveName: '정상무', managerName: '윤팀장', memberName: '한사원' }
-      ];
-      
-      // 데이터베이스에 초기 팀들 생성
-      const createdTeams = await Promise.all(
-        initialTeams.map(async (team) => {
-          try {
-            const response = await fetch('/api/executive-teams', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(team)
-            });
-            return response.ok ? await response.json() : null;
-          } catch (error) {
-            console.error('Failed to create initial team:', error);
-            return null;
-          }
-        })
-      );
-      
-      const validTeams = createdTeams.filter(team => team !== null);
-      const formattedMatches: ExecutiveMatch[] = validTeams.map((team: any, index: number) => ({
-        id: team.id,
-        round: 1,
-        matchNumber: index + 1,
-        teamName: team.teamName,
-        executiveName: team.executiveName,
-        managerName: team.managerName,
-        memberName: team.memberName,
-        score: team.score,
-        status: team.status
-      }));
-      
-      setMatches(formattedMatches);
+      // 데이터베이스에 데이터가 없으면 빈 상태로 시작
     };
     
     loadTeams();
@@ -225,15 +194,117 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
     });
   };
 
+  // 새 팀 추가 핸들러
+  const handleAddNewTeam = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newTeamForm.teamName || !newTeamForm.executiveName || !newTeamForm.managerName || !newTeamForm.memberName) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/executive-teams', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTeamForm)
+      });
+
+      if (response.ok) {
+        const newTeam = await response.json();
+        const newMatch: ExecutiveMatch = {
+          id: newTeam.id,
+          round: 1,
+          matchNumber: matches.length + 1,
+          teamName: newTeam.teamName,
+          executiveName: newTeam.executiveName,
+          managerName: newTeam.managerName,
+          memberName: newTeam.memberName,
+          score: newTeam.score,
+          status: newTeam.status
+        };
+        
+        setMatches([...matches, newMatch]);
+        setNewTeamForm({ teamName: '', executiveName: '', managerName: '', memberName: '' });
+        setShowAddForm(false);
+        alert('새 팀이 추가되었습니다!');
+      } else {
+        alert('팀 추가에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('Error adding new team:', error);
+      alert('팀 추가 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* 헤더 */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-purple-800 mb-2">
-          👑 경영진 매치게임 관리
-        </h1>
-        <p className="text-gray-600">점수를 입력하고 저장하면 본페이지에 실시간 반영됩니다</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-purple-800 mb-2">
+            👑 경영진 매치게임 관리
+          </h1>
+          <p className="text-gray-600">점수를 입력하고 저장하면 본페이지에 실시간 반영됩니다</p>
+        </div>
+        <button 
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+        >
+          {showAddForm ? '취소' : '새 팀 추가'}
+        </button>
       </div>
+
+      {/* 새 팀 추가 폼 */}
+      {showAddForm && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-purple-50 rounded-lg p-6 border border-purple-200"
+        >
+          <h3 className="text-lg font-semibold text-purple-800 mb-4">새 팀 추가</h3>
+          <form onSubmit={handleAddNewTeam} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <input
+              type="text"
+              placeholder="팀명 (예: A팀)"
+              value={newTeamForm.teamName}
+              onChange={(e) => setNewTeamForm({ ...newTeamForm, teamName: e.target.value })}
+              className="px-3 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+            <input
+              type="text"
+              placeholder="경영진 이름"
+              value={newTeamForm.executiveName}
+              onChange={(e) => setNewTeamForm({ ...newTeamForm, executiveName: e.target.value })}
+              className="px-3 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+            <input
+              type="text"
+              placeholder="팀장급 이름"
+              value={newTeamForm.managerName}
+              onChange={(e) => setNewTeamForm({ ...newTeamForm, managerName: e.target.value })}
+              className="px-3 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+            <input
+              type="text"
+              placeholder="팀원급 이름"
+              value={newTeamForm.memberName}
+              onChange={(e) => setNewTeamForm({ ...newTeamForm, memberName: e.target.value })}
+              className="px-3 py-2 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+            <button
+              type="submit"
+              className="md:col-span-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+            >
+              팀 추가
+            </button>
+          </form>
+        </motion.div>
+      )}
 
       {/* 통계 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

@@ -45,17 +45,6 @@ export default function ExecutiveTournamentPage() {
       } catch (error) {
         console.error('Error loading executive teams:', error);
       }
-      
-      // 데이터가 없으면 기본 팀 표시
-      if (matches.length === 0) {
-        const defaultTeams: ExecutiveMatch[] = [
-          { id: '1', round: 1, matchNumber: 1, teamName: 'A팀', executiveName: '김대표', managerName: '이팀장', memberName: '박사원', status: 'SCHEDULED' },
-          { id: '2', round: 1, matchNumber: 2, teamName: 'B팀', executiveName: '이부사장', managerName: '정팀장', memberName: '최사원', status: 'SCHEDULED' },
-          { id: '3', round: 1, matchNumber: 3, teamName: 'C팀', executiveName: '박전무', managerName: '김팀장', memberName: '조사원', status: 'SCHEDULED' },
-          { id: '4', round: 1, matchNumber: 4, teamName: 'D팀', executiveName: '정상무', managerName: '윤팀장', memberName: '한사원', status: 'SCHEDULED' }
-        ];
-        setMatches(defaultTeams);
-      }
     };
 
     loadMatches();
