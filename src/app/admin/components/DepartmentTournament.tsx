@@ -27,6 +27,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
   const [editingPlayer, setEditingPlayer] = useState<string | null>(null);
   const [tempScores, setTempScores] = useState<{[key: string]: {player1Score: number, player2Score: number}}>({});
   const [tempNames, setTempNames] = useState<{[key: string]: {player1Name: string, player1Department: string, player2Name: string, player2Department: string}}>({});
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     // 데이터베이스에서 토너먼트 매치 데이터 로드
@@ -368,6 +369,38 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     alert('점수가 저장되고 승자가 다음 라운드로 진출했습니다!');
   };
 
+  // 16강 브래킷 생성 함수
+  const handleGenerateBracket = async () => {
+    if (confirm('16강 토너먼트 브래킷을 생성하시겠습니까?\n16개 팀 슬롯이 생성되며, 기존 경기 데이터는 모두 삭제됩니다.')) {
+      try {
+        setGenerating(true);
+        const response = await fetch('/api/tournaments/bracket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tournamentId: '1' })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          // 데이터 새로고침
+          const matchesResponse = await fetch('/api/tournaments/matches');
+          if (matchesResponse.ok) {
+            const data = await matchesResponse.json();
+            setMatches(data);
+          }
+          alert('16강 토너먼트 브래킷이 성공적으로 생성되었습니다!\n각 경기에서 참가자 이름을 직접 입력해주세요.');
+        } else {
+          alert('브래킷 생성에 실패했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('Error generating bracket:', error);
+        alert('브래킷 생성 중 오류가 발생했습니다.');
+      } finally {
+        setGenerating(false);
+      }
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* 헤더 */}
@@ -406,9 +439,37 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
 
       {/* 토너먼트 브래킷 - 16강부터 시작 */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">16강 토너먼트 브래킷 - 모든 정보 입력</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold text-gray-800">16강 토너먼트 브래킷 - 모든 정보 입력</h2>
+          {matches.length === 0 && (
+            <button
+              onClick={handleGenerateBracket}
+              disabled={generating}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {generating ? '생성 중...' : '16강 브래킷 생성'}
+            </button>
+          )}
+        </div>
         
-        <div className="space-y-8">
+        {matches.length === 0 ? (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <div className="text-4xl mb-4">🏆</div>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">16강 토너먼트 브래킷</h3>
+            <p className="text-gray-600 mb-4">
+              16강 토너먼트 브래킷을 생성하면 16개 팀 슬롯이 만들어집니다.<br/>
+              생성 후 각 경기에서 참가자 이름을 직접 입력하세요.
+            </p>
+            <button
+              onClick={handleGenerateBracket}
+              disabled={generating}
+              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {generating ? '생성 중...' : '16강 브래킷 생성'}
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-8">
           {/* 16강 - 가장 먼저 표시 */}
           <div>
             <h3 className="text-2xl font-bold text-center mb-6 text-blue-600">16강</h3>
@@ -829,7 +890,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
               ))}
             </div>
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
