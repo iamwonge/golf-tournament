@@ -51,24 +51,24 @@ export default function Home() {
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative px-8 py-16 text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl font-bold mb-6 text-white">
+            <h1 className="text-2xl md:text-5xl font-bold mb-6 text-white">
               2025 경신 스크린골프 대회
             </h1>
-            <p className="text-xl mb-8 text-blue-100">
-              Kyungshin Golf Tournament - 5개 대회로 구성된 골프 대회회
+            <p className="text-base md:text-xl mb-8 text-blue-100">
+              Kyungshin Golf Tournament - 5개 대회로 구성된 골프 대회
             </p>
-            <div className="flex justify-center space-x-4">
-              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-8 py-4 min-w-[120px]">
-                <div className="text-2xl font-bold text-gray-900">5</div>
-                <div className="text-sm text-gray-600">대회 종목</div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:space-x-4">
+              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-4 sm:px-8 py-4 min-w-[100px] sm:min-w-[120px]">
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">5</div>
+                <div className="text-xs sm:text-sm text-gray-600">대회 종목</div>
               </div>
-              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-8 py-4 min-w-[120px]">
-                <div className="text-2xl font-bold text-gray-900">16+</div>
-                <div className="text-sm text-gray-600">참가자</div>
+              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-4 sm:px-8 py-4 min-w-[100px] sm:min-w-[120px]">
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">16+</div>
+                <div className="text-xs sm:text-sm text-gray-600">참가자</div>
               </div>
-              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-8 py-4 min-w-[120px]">
-                <div className="text-2xl font-bold text-gray-900">Live</div>
-                <div className="text-sm text-gray-600">실시간 결과</div>
+              <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg px-4 sm:px-8 py-4 min-w-[100px] sm:min-w-[120px]">
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">Live</div>
+                <div className="text-xs sm:text-sm text-gray-600">실시간 결과</div>
               </div>
             </div>
           </div>
@@ -78,8 +78,8 @@ export default function Home() {
       {/* 대회 종목 섹션 */}
       <div>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">대회 종목</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">대회 종목</h2>
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             다양한 골프 경기로 구성된 대회에서 실력을 겨뤄보세요!
           </p>
         </div>
@@ -92,8 +92,8 @@ export default function Home() {
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <span className="text-white text-2xl font-bold">🏆</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">본부별 토너먼트</h3>
-                <p className="text-gray-600 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">본부별 토너먼트</h3>
+                <p className="text-sm md:text-base text-gray-600 mb-4 leading-relaxed flex-grow">
                   16강 토너먼트 형식으로 진행되는 본부 대항전입니다. 본부간 골프실력을 겨뤄보세요!
                 </p>
                 <div className="flex items-center text-blue-600 font-medium group-hover:text-blue-700 mt-auto">
@@ -220,26 +220,26 @@ export default function Home() {
           <p className="text-gray-600 mt-1">Live Tournament Dashboard</p>
         </div>
         <div className="p-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-            <div className="text-center p-6 bg-blue-50 rounded-xl border border-blue-100">
-              <div className="text-3xl font-bold text-blue-600 mb-2">13</div>
-              <div className="text-sm font-medium text-blue-700">본부대항전 참가팀</div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6">
+            <div className="text-center p-3 md:p-6 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="text-xl md:text-3xl font-bold text-blue-600 mb-1 md:mb-2">13</div>
+              <div className="text-xs md:text-sm font-medium text-blue-700">본부대항전 참가팀</div>
             </div>
-            <div className="text-center p-6 bg-purple-50 rounded-xl border border-purple-100">
-              <div className="text-3xl font-bold text-purple-600 mb-2">4</div>
-              <div className="text-sm font-medium text-purple-700">경영진 대항전 참가팀</div>
+            <div className="text-center p-3 md:p-6 bg-purple-50 rounded-xl border border-purple-100">
+              <div className="text-xl md:text-3xl font-bold text-purple-600 mb-1 md:mb-2">4</div>
+              <div className="text-xs md:text-sm font-medium text-purple-700">경영진 대항전 참가팀</div>
             </div>
-            <div className="text-center p-6 bg-green-50 rounded-xl border border-green-100">
-              <div className="text-3xl font-bold text-green-600 mb-2">{recordCounts.longest}</div>
-              <div className="text-sm font-medium text-green-700">롱기스트 기록</div>
+            <div className="text-center p-3 md:p-6 bg-green-50 rounded-xl border border-green-100">
+              <div className="text-xl md:text-3xl font-bold text-green-600 mb-1 md:mb-2">{recordCounts.longest}</div>
+              <div className="text-xs md:text-sm font-medium text-green-700">롱기스트 기록</div>
             </div>
-            <div className="text-center p-6 bg-orange-50 rounded-xl border border-orange-100">
-              <div className="text-3xl font-bold text-orange-600 mb-2">{recordCounts.putting}</div>
-              <div className="text-sm font-medium text-orange-700">퍼팅 기록</div>
+            <div className="text-center p-3 md:p-6 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="text-xl md:text-3xl font-bold text-orange-600 mb-1 md:mb-2">{recordCounts.putting}</div>
+              <div className="text-xs md:text-sm font-medium text-orange-700">퍼팅 기록</div>
             </div>
-            <div className="text-center p-6 bg-red-50 rounded-xl border border-red-100">
-              <div className="text-3xl font-bold text-red-600 mb-2">{recordCounts.nearest}</div>
-              <div className="text-sm font-medium text-red-700">니어핀 기록</div>
+            <div className="text-center p-3 md:p-6 bg-red-50 rounded-xl border border-red-100">
+              <div className="text-xl md:text-3xl font-bold text-red-600 mb-1 md:mb-2">{recordCounts.nearest}</div>
+              <div className="text-xs md:text-sm font-medium text-red-700">니어핀 기록</div>
             </div>
           </div>
         </div>
