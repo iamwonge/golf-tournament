@@ -34,18 +34,11 @@ export default function TournamentBracket({ matches, users, onGenerateBracket, l
   const [generating, setGenerating] = useState(false);
 
   const handleGenerateBracket = async () => {
-    const seededUsers = users.filter(user => user.seedNumber && !user.isBye);
-    
-    if (seededUsers.length < 2) {
-      alert('브래킷을 생성하려면 최소 2명의 시드 배정된 참가자가 필요합니다.');
-      return;
-    }
-
-    if (confirm(`${seededUsers.length}명의 시드 배정된 참가자로 토너먼트 브래킷을 생성하시겠습니까?\n기존 경기 데이터는 모두 삭제됩니다.`)) {
+    if (confirm('16강 토너먼트 브래킷을 생성하시겠습니까?\n16개 팀 슬롯이 생성되며, 기존 경기 데이터는 모두 삭제됩니다.')) {
       try {
         setGenerating(true);
         await onGenerateBracket();
-        alert('토너먼트 브래킷이 성공적으로 생성되었습니다!');
+        alert('16강 토너먼트 브래킷이 성공적으로 생성되었습니다!\n각 경기에서 참가자 이름을 직접 입력해주세요.');
       } catch (error) {
         console.error('Error generating bracket:', error);
         alert('브래킷 생성 중 오류가 발생했습니다.');
@@ -132,14 +125,15 @@ export default function TournamentBracket({ matches, users, onGenerateBracket, l
           <div className="text-4xl mb-4">🏆</div>
           <h3 className="text-lg font-medium text-gray-800 mb-2">토너먼트 브래킷</h3>
           <p className="text-gray-600 mb-4">
-            참가자들에게 시드를 배정한 후 브래킷을 생성해주세요.
+            16강 토너먼트 브래킷을 생성하면 16개 팀 슬롯이 만들어집니다.<br/>
+            생성 후 각 경기에서 참가자 이름을 직접 입력하세요.
           </p>
           <button
             onClick={handleGenerateBracket}
-            disabled={generating || users.filter(u => u.seedNumber && !u.isBye).length < 2}
+            disabled={generating}
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {generating ? '생성 중...' : '브래킷 생성'}
+            {generating ? '생성 중...' : '16강 브래킷 생성'}
           </button>
         </motion.div>
       ) : (

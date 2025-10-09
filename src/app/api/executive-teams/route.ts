@@ -12,7 +12,9 @@ export async function GET() {
       ]
     });
 
-    return NextResponse.json(teams);
+    const response = NextResponse.json(teams);
+    response.headers.set('Content-Type', 'application/json; charset=utf-8');
+    return response;
   } catch (error) {
     console.error('Error fetching executive teams:', error);
     return NextResponse.json({ error: 'Failed to fetch executive teams' }, { status: 500 });
@@ -76,7 +78,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json(team, { status: teamId ? 200 : 201 });
+    const response = NextResponse.json(team, { status: teamId ? 200 : 201 });
+    response.headers.set('Content-Type', 'application/json; charset=utf-8');
+    return response;
   } catch (error) {
     console.error('Error saving executive team:', error);
     return NextResponse.json({ error: 'Failed to save executive team' }, { status: 500 });

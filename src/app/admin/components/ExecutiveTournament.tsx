@@ -37,7 +37,11 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
     // 데이터베이스에서 경영진 팀 데이터 로드
     const loadTeams = async () => {
       try {
-        const response = await fetch('/api/executive-teams');
+        const response = await fetch('/api/executive-teams', {
+          headers: { 
+            'Accept': 'application/json; charset=utf-8'
+          }
+        });
         if (response.ok) {
           const teams = await response.json();
           // API 데이터를 ExecutiveMatch 형식으로 변환
@@ -206,7 +210,10 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
     try {
       const response = await fetch('/api/executive-teams', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json; charset=utf-8'
+        },
         body: JSON.stringify(newTeamForm)
       });
 
