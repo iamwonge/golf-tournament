@@ -589,7 +589,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                       <span className="text-lg">👔</span>
                       <div>
                         <div className="font-medium">{match.teamName}</div>
-                        <div className="text-xs text-red-600">{match.executiveName}</div>
+                        <div className="text-xs text-gray-900 dark:text-white">{match.executiveName}</div>
                         <div className="text-xs text-blue-600">{match.managerName}</div>
                         <div className="text-xs text-green-600">{match.memberName}</div>
                       </div>

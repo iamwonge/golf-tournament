@@ -26,10 +26,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900 min-h-screen`}
       >
         {/* 반응형 네비게이션 */}
-        <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+        <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16 md:h-20">
               {/* 로고 및 제목 */}
@@ -39,7 +39,7 @@ export default function RootLayout({
                   alt="경신 로고" 
                   className="h-8 w-auto md:h-12 flex-shrink-0"
                 />
-                <div className="text-sm md:text-xl font-bold text-gray-800 truncate">
+                <div className="text-sm md:text-xl font-bold text-gray-800 dark:text-white truncate">
                   <span className="hidden sm:inline">2025 경신 스크린골프 대회</span>
                   <span className="sm:hidden">경신 골프대회</span>
                 </div>
@@ -59,9 +59,9 @@ export default function RootLayout({
         </main>
         
         {/* 푸터 */}
-        <footer className="bg-white border-t border-gray-200 mt-16">
+        <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
           <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <div className="text-center text-gray-500 text-sm">
+            <div className="text-center text-gray-500 dark:text-gray-400 text-sm">
               <p>&copy; 2025 사내 골프 대회. All rights reserved.</p>
             </div>
           </div>
