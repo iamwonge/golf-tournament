@@ -356,8 +356,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     
     setMatches(updatedMatches);
     
-    // 데이터베이스에 모든 업데이트된 매치들 저장
-    saveMatchesToDatabase(updatedMatches);
+    // 데이터베이스에 현재 매치만 업데이트
+    updateMatchInDatabase(updatedMatches.find(m => m.id === matchId)!);
     
     setEditingMatch(null);
     setTempScores(prev => {

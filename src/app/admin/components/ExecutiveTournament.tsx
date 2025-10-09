@@ -201,12 +201,14 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
   // 새 팀 추가 핸들러
   const handleAddNewTeam = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted:', newTeamForm);
     
     if (!newTeamForm.teamName || !newTeamForm.executiveName || !newTeamForm.managerName || !newTeamForm.memberName) {
       alert('모든 필드를 입력해주세요.');
       return;
     }
 
+    console.log('Sending request to API...');
     try {
       const response = await fetch('/api/executive-teams', {
         method: 'POST',
@@ -219,6 +221,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
 
       if (response.ok) {
         const newTeam = await response.json();
+        console.log('Team added successfully:', newTeam);
         const newMatch: ExecutiveMatch = {
           id: newTeam.id,
           round: 1,
@@ -236,6 +239,8 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
         setShowAddForm(false);
         alert('새 팀이 추가되었습니다!');
       } else {
+        const errorText = await response.text();
+        console.error('API Error:', response.status, errorText);
         alert('팀 추가에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
