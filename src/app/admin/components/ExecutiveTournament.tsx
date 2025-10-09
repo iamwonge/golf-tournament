@@ -249,6 +249,27 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
     }
   };
 
+  // 팀 삭제 핸들러
+  const handleDeleteTeam = async (teamId: string, teamName: string) => {
+    if (confirm(`정말로 "${teamName}" 팀을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) {
+      try {
+        const response = await fetch(`/api/executive-teams/${teamId}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          setMatches(matches.filter(match => match.id !== teamId));
+          alert('팀이 성공적으로 삭제되었습니다.');
+        } else {
+          alert('팀 삭제에 실패했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('Error deleting team:', error);
+        alert('팀 삭제 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* 헤더 */}
@@ -541,6 +562,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                 <th className="text-left py-3 px-4">참가자</th>
                 <th className="text-center py-3 px-4">최종 스코어</th>
                 <th className="text-center py-3 px-4">상태</th>
+                <th className="text-center py-3 px-4">관리</th>
               </tr>
             </thead>
             <tbody>
@@ -575,6 +597,15 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(match.status)}`}>
                       {getStatusText(match.status)}
                     </span>
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <button
+                      onClick={() => handleDeleteTeam(match.id, match.teamName)}
+                      className="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600 transition-colors"
+                      title="팀 삭제"
+                    >
+                      삭제
+                    </button>
                   </td>
                 </tr>
               ))}

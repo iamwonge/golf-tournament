@@ -1,7 +1,49 @@
+'use client';
+
 import Link from "next/link";
 import PhotoGallery from "./components/PhotoGallery";
+import { useState, useEffect } from 'react';
+
+interface RecordCounts {
+  longest: number;
+  putting: number;
+  nearest: number;
+}
 
 export default function Home() {
+  const [recordCounts, setRecordCounts] = useState<RecordCounts>({
+    longest: 0,
+    putting: 0,
+    nearest: 0
+  });
+
+  useEffect(() => {
+    const fetchRecordCounts = async () => {
+      try {
+        const [longestRes, puttingRes, nearestRes] = await Promise.all([
+          fetch('/api/longest'),
+          fetch('/api/putting'),
+          fetch('/api/nearest')
+        ]);
+
+        const [longestData, puttingData, nearestData] = await Promise.all([
+          longestRes.json(),
+          puttingRes.json(),
+          nearestRes.json()
+        ]);
+
+        setRecordCounts({
+          longest: longestData.length || 0,
+          putting: puttingData.length || 0,
+          nearest: nearestData.length || 0
+        });
+      } catch (error) {
+        console.error('Failed to fetch record counts:', error);
+      }
+    };
+
+    fetchRecordCounts();
+  }, []);
   return (
     <div className="space-y-12">
       {/* 히어로 섹션 - 경신 브랜드 스타일 */}
@@ -188,15 +230,15 @@ export default function Home() {
               <div className="text-sm font-medium text-purple-700">경영진 대항전 참가팀</div>
             </div>
             <div className="text-center p-6 bg-green-50 rounded-xl border border-green-100">
-              <div className="text-3xl font-bold text-green-600 mb-2">4</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">{recordCounts.longest}</div>
               <div className="text-sm font-medium text-green-700">롱기스트 기록</div>
             </div>
             <div className="text-center p-6 bg-orange-50 rounded-xl border border-orange-100">
-              <div className="text-3xl font-bold text-orange-600 mb-2">5</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">{recordCounts.putting}</div>
               <div className="text-sm font-medium text-orange-700">퍼팅 기록</div>
             </div>
             <div className="text-center p-6 bg-red-50 rounded-xl border border-red-100">
-              <div className="text-3xl font-bold text-red-600 mb-2">12</div>
+              <div className="text-3xl font-bold text-red-600 mb-2">{recordCounts.nearest}</div>
               <div className="text-sm font-medium text-red-700">니어핀 기록</div>
             </div>
           </div>
