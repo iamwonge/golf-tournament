@@ -33,6 +33,8 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    console.log('Received request body:', body);
+    
     const { 
       teamId,
       teamName, 
@@ -43,7 +45,10 @@ export async function POST(request: NextRequest) {
       status 
     } = body;
 
+    console.log('Extracted fields:', { teamId, teamName, executiveName, managerName, memberName, score, status });
+
     if (!teamName || !executiveName || !managerName || !memberName) {
+      console.log('Validation failed - missing required fields');
       return NextResponse.json({ 
         error: 'Team name, executive name, manager name, and member name are required' 
       }, { status: 400 });
@@ -66,6 +71,15 @@ export async function POST(request: NextRequest) {
       });
     } else {
       // 새 팀 생성
+      console.log('Creating new team with data:', {
+        teamName,
+        executiveName,
+        managerName,
+        memberName,
+        score: score !== undefined ? parseInt(score) : undefined,
+        status: status || 'SCHEDULED'
+      });
+      
       team = await prisma.executiveTeam.create({
         data: {
           teamName,
@@ -76,6 +90,8 @@ export async function POST(request: NextRequest) {
           status: status || 'SCHEDULED'
         }
       });
+      
+      console.log('Team created successfully:', team);
     }
 
     const response = NextResponse.json(team, { status: teamId ? 200 : 201 });
@@ -83,6 +99,14 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error) {
     console.error('Error saving executive team:', error);
-    return NextResponse.json({ error: 'Failed to save executive team' }, { status: 500 });
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    });
+    return NextResponse.json({ 
+      error: 'Failed to save executive team',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
