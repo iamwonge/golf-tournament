@@ -22,21 +22,14 @@ export default function MobileNav() {
       {/* 햄버거 메뉴 버튼 - 모바일에서만 표시 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1"
+        className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors"
         aria-label="메뉴 열기"
       >
-        <motion.span
-          animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-          className="w-6 h-0.5 bg-gray-700 block transition-all"
-        />
-        <motion.span
-          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-          className="w-6 h-0.5 bg-gray-700 block transition-all"
-        />
-        <motion.span
-          animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-          className="w-6 h-0.5 bg-gray-700 block transition-all"
-        />
+        {isOpen ? (
+          <span className="text-2xl text-gray-800">✕</span>
+        ) : (
+          <span className="text-2xl text-gray-800">☰</span>
+        )}
       </button>
 
       {/* 데스크톱 메뉴 - md 이상에서만 표시 */}
