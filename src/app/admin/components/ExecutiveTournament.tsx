@@ -530,18 +530,26 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                     </button>
                   </div>
                 ) : (
-                  <div className="flex space-x-2">
+                  <div className="space-y-2">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => setEditingTeam(match.id)}
+                        className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                      >
+                        팀 수정
+                      </button>
+                      <button
+                        onClick={() => setEditingMatch(match.id)}
+                        className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                      >
+                        점수 입력
+                      </button>
+                    </div>
                     <button
-                      onClick={() => setEditingTeam(match.id)}
-                      className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                      onClick={() => handleDeleteTeam(match.id, match.teamName)}
+                      className="w-full bg-red-500 text-white px-3 py-2 rounded text-sm hover:bg-red-600 transition-colors"
                     >
-                      팀 수정
-                    </button>
-                    <button
-                      onClick={() => setEditingMatch(match.id)}
-                      className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
-                    >
-                      점수 입력
+                      팀 삭제
                     </button>
                   </div>
                 )}
