@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-// Sharp 모듈을 동적으로 import하여 Vercel 배포 문제 해결
 import { isAdmin } from '@/lib/auth';
 
 export async function GET() {
@@ -26,21 +23,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    // 모든 사진 정보 가져오기
-    const photos = await prisma.photo.findMany();
-    
-    // 파일들 삭제
-    const { unlink } = await import('fs/promises');
-    for (const photo of photos) {
-      try {
-        const filePath = path.join(process.cwd(), 'public', photo.filePath);
-        await unlink(filePath);
-      } catch (fileError) {
-        console.error(`File deletion error for ${photo.filePath}:`, fileError);
-      }
-    }
-    
-    // 데이터베이스에서 모든 사진 삭제
+    // 데이터베이스에서 모든 사진 삭제 (Base64 데이터이므로 파일 삭제 불필요)
     const result = await prisma.photo.deleteMany({});
     
     return NextResponse.json({ 
@@ -82,9 +65,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    // 파일 검증 (HEIC 파일 지원 추가)
-    const allowedTypes = ['image/', 'application/octet-stream']; // HEIC는 octet-stream으로 인식됨
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif'];
+    // 파일 검증
+    const allowedTypes = ['image/'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
     
     const isValidType = allowedTypes.some(type => file.type.startsWith(type));
@@ -92,67 +75,45 @@ export async function POST(request: NextRequest) {
     
     if (!isValidType && !isValidExtension) {
       console.log('Invalid file type:', { type: file.type, extension: fileExtension });
-      return NextResponse.json({ error: 'Only image files are allowed (JPG, PNG, GIF, WebP, HEIC)' }, { status: 400 });
+      return NextResponse.json({ error: 'Only image files are allowed (JPG, PNG, GIF, WebP)' }, { status: 400 });
     }
 
-    // 파일 크기 제한 (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 });
+    // 파일 크기 제한 (5MB - Vercel 제한 고려)
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 });
     }
 
-    // 업로드 디렉토리 생성
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'photos');
-    await mkdir(uploadDir, { recursive: true });
-
-    // 고유 파일명 생성
-    const timestamp = Date.now();
-    const originalExtension = path.extname(file.name).toLowerCase();
-    const isHeic = ['.heic', '.heif'].includes(originalExtension);
-    
-    // HEIC 파일은 JPEG로 변환
-    const outputExtension = isHeic ? '.jpg' : originalExtension;
-    const fileName = `${timestamp}-${path.basename(file.name, originalExtension)}${outputExtension}`;
-    const filePath = path.join(uploadDir, fileName);
-    const publicPath = `/uploads/photos/${fileName}`;
-
-    // 파일 저장 및 변환
+    // Vercel에서는 파일을 직접 저장할 수 없으므로 Base64로 변환하여 데이터베이스에 저장
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
-    if (isHeic) {
-      try {
-        // HEIC를 JPEG로 변환 (Sharp 동적 import)
-        const sharp = (await import('sharp')).default;
-        const convertedBuffer = await sharp(buffer)
-          .jpeg({ quality: 85 })
-          .toBuffer();
-        await writeFile(filePath, convertedBuffer);
-      } catch (error) {
-        console.error('Sharp module error:', error);
-        // Sharp 실패 시 원본 파일 저장
-        await writeFile(filePath, buffer);
-      }
-    } else {
-      // 일반 이미지는 그대로 저장
-      await writeFile(filePath, buffer);
-    }
+    const base64Data = buffer.toString('base64');
+    const dataUrl = `data:${file.type};base64,${base64Data}`;
 
-    // 데이터베이스에 저장
+    // 데이터베이스에 저장 (filePath에 data URL 저장)
     const photo = await prisma.photo.create({
       data: {
         title: title || file.name,
         description: description || null,
-        fileName,
-        filePath: publicPath,
+        fileName: file.name,
+        filePath: dataUrl, // Base64 데이터 URL로 저장
         fileSize: file.size,
         mimeType: file.type,
-        uploadedBy: 'admin' // TODO: 실제 사용자 정보로 변경
+        uploadedBy: 'admin'
       }
     });
 
-    return NextResponse.json(photo);
+    // 응답에서는 Base64 데이터 제외하고 메타데이터만 반환
+    const { filePath, ...photoMeta } = photo;
+    
+    return NextResponse.json({
+      ...photoMeta,
+      hasImage: true
+    });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Failed to upload photo' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Failed to upload photo',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
