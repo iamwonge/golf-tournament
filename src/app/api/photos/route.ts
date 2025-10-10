@@ -118,9 +118,10 @@ export async function POST(request: NextRequest) {
       try {
         // HEIC를 JPEG로 변환 (Sharp 동적 import)
         const sharp = (await import('sharp')).default;
-        buffer = await sharp(buffer)
+        const convertedBuffer = await sharp(buffer)
           .jpeg({ quality: 85 })
           .toBuffer();
+        buffer = Buffer.from(convertedBuffer);
       } catch (error) {
         console.error('Sharp module error:', error);
         // Sharp 실패 시 원본 파일 사용
