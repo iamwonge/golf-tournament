@@ -40,13 +40,12 @@ const nextConfig: NextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block'
           },
-          {
-            // CSP 설정 (개발환경 고려)
-            key: 'Content-Security-Policy',
-            value: process.env.NODE_ENV === 'production' 
-              ? "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"
-              : "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"
-          }
+          // CSP는 임시로 비활성화 (Next.js 호환성 문제로 인해)
+          // 추후 단계적으로 적용 예정
+          // {
+          //   key: 'Content-Security-Policy',
+          //   value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https: ws: wss:; frame-ancestors 'none';"
+          // }
         ],
       },
     ];
