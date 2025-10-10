@@ -25,6 +25,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <meta name="color-scheme" content="light only" />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root, body {
+              color-scheme: light;
+              background-color: #fff !important;
+              color: #000 !important;
+            }
+            * {
+              color-scheme: light;
+            }
+          `
+        }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
       >

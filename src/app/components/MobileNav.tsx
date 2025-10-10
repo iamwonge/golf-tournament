@@ -8,13 +8,13 @@ export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { href: '/', label: '홈', icon: '🏠' },
-    { href: '/tournament/department', label: '본부별 토너먼트', icon: '🏆' },
-    { href: '/tournament/executive', label: '경영진 매치', icon: '👑' },
-    { href: '/longest', label: '롱기스트', icon: '🚀' },
-    { href: '/putting', label: '퍼팅게임', icon: '🎯' },
-    { href: '/nearest', label: '니어핀', icon: '🎪' },
-    { href: '/admin', label: '관리자', icon: '⚙️' },
+    { href: '/', label: '홈', icon: '' },
+    { href: '/tournament/department', label: '본부별 토너먼트', icon: '' },
+    { href: '/tournament/executive', label: '경영진 매치', icon: '' },
+    { href: '/longest', label: '롱기스트', icon: '' },
+    { href: '/putting', label: '퍼팅게임', icon: '' },
+    { href: '/nearest', label: '니어핀', icon: '' },
+    { href: '/admin', label: '관리자', icon: '' },
   ];
 
   return (

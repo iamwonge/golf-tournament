@@ -89,7 +89,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">🏆</span>
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">본부별 토너먼트</h3>
                 <p className="text-sm md:text-base text-gray-600  mb-4 leading-relaxed flex-grow">
@@ -110,7 +110,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">👑</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900  mb-3">경영진 매치게임</h3>
                 <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
@@ -131,7 +131,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">🚀</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900  mb-3">롱기스트 드라이브</h3>
                 <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
@@ -152,7 +152,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">🎯</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900  mb-3">퍼팅 정확도</h3>
                 <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
@@ -173,7 +173,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">🎪</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900  mb-3">니어핀 챌린지</h3>
                 <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
@@ -194,7 +194,7 @@ export default function Home() {
             <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-gray-500 to-gray-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold"></span>
+                  <span className="text-white text-2xl font-bold">⚙️</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900  mb-3">관리자 대시보드</h3>
                 <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
