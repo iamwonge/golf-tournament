@@ -3,30 +3,45 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // 데이터베이스 연결 테스트
-    const result = await prisma.$queryRaw`SELECT 1 as test`;
+    // 1. 기본 데이터베이스 연결 테스트
+    console.log('Testing database connection...');
     
-    // 테이블 존재 확인
+    // 2. 간단한 쿼리 실행
     const userCount = await prisma.user.count();
-    const matchCount = await prisma.tournamentMatch.count();
-    const tournamentCount = await prisma.tournament.count();
+    const photoCount = await prisma.photo.count();
+    
+    // 3. Photo 테이블 스키마 확인
+    const photos = await prisma.photo.findMany({
+      take: 1,
+      select: {
+        id: true,
+        title: true,
+        fileName: true,
+        createdAt: true
+      }
+    });
+    
+    console.log('Database connection successful');
     
     return NextResponse.json({
       status: 'success',
-      database: 'connected',
-      tables: {
-        users: userCount,
-        matches: matchCount,
-        tournaments: tournamentCount
-      },
-      testQuery: result
+      message: 'Database connection working',
+      data: {
+        userCount,
+        photoCount,
+        samplePhoto: photos[0] || null,
+        timestamp: new Date().toISOString()
+      }
     });
+    
   } catch (error) {
-    console.error('Database test error:', error);
+    console.error('Database connection error:', error);
+    
     return NextResponse.json({
       status: 'error',
-      database: 'disconnected',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      message: 'Database connection failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
     }, { status: 500 });
   }
 }
