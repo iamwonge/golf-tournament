@@ -47,40 +47,40 @@ export default function Home() {
   return (
     <div className="space-y-12">
       {/* 히어로 섹션 - 경신 브랜드 스타일 */}
-      <div className="relative bg-gray-100 rounded-2xl overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl overflow-hidden">
         <div className="relative px-8 py-16 text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl md:text-5xl font-bold mb-6 text-gray-800">
+            <h1 className="text-2xl md:text-5xl font-bold mb-6 text-white">
               2025 경신 스크린린골프 대회
             </h1>
-            <p className="text-base md:text-xl mb-8 text-gray-600">
+            <p className="text-base md:text-xl mb-8 text-blue-100">
               Kyungshin Golf Tournament - 5개 대회로 구성된 골프 대회
             </p>
-            <div className="mt-8 bg-white bg-opacity-95 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            <div className="mt-8 bg-white rounded-xl p-6 shadow-lg">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-bold text-gray-800">실시간 대회 현황</h3>
-                <p className="text-sm text-gray-600">Live Tournament Dashboard</p>
+                <h3 className="text-lg font-bold text-gray-900">실시간 대회 현황</h3>
+                <p className="text-sm text-gray-700">Live Tournament Dashboard</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
-                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-lg md:text-2xl font-bold text-blue-700 mb-1">13</div>
-                  <div className="text-xs md:text-sm font-medium text-blue-600">본부대항전 참가팀</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">13</div>
+                  <div className="text-xs md:text-sm font-medium text-gray-700">본부대항전 참가팀</div>
                 </div>
-                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-lg md:text-2xl font-bold text-blue-700 mb-1">4</div>
-                  <div className="text-xs md:text-sm font-medium text-blue-600">경영진 대항전 참가팀</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">4</div>
+                  <div className="text-xs md:text-sm font-medium text-gray-700">경영진 대항전 팀</div>
                 </div>
-                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-lg md:text-2xl font-bold text-blue-700 mb-1">{recordCounts.longest}</div>
-                  <div className="text-xs md:text-sm font-medium text-blue-600">롱기스트 기록</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">{recordCounts.longest}</div>
+                  <div className="text-xs md:text-sm font-medium text-gray-700">롱기스트 기록</div>
                 </div>
-                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-lg md:text-2xl font-bold text-blue-700 mb-1">{recordCounts.putting}</div>
-                  <div className="text-xs md:text-sm font-medium text-blue-600">퍼팅 기록</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">{recordCounts.putting}</div>
+                  <div className="text-xs md:text-sm font-medium text-gray-700">퍼팅 기록</div>
                 </div>
-                <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl border border-blue-200">
-                  <div className="text-lg md:text-2xl font-bold text-blue-700 mb-1">{recordCounts.nearest}</div>
-                  <div className="text-xs md:text-sm font-medium text-blue-600">니어핀 기록</div>
+                <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">{recordCounts.nearest}</div>
+                  <div className="text-xs md:text-sm font-medium text-gray-700">니어핀 기록</div>
                 </div>
               </div>
             </div>
