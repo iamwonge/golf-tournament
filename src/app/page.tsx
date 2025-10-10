@@ -47,14 +47,13 @@ export default function Home() {
   return (
     <div className="space-y-12">
       {/* 히어로 섹션 - 경신 브랜드 스타일 */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative px-8 py-16 text-center text-white">
+      <div className="relative bg-gray-100 rounded-2xl overflow-hidden">
+        <div className="relative px-8 py-16 text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl md:text-5xl font-bold mb-6 text-white">
-              2025 경신 스크린골프 대회
+            <h1 className="text-2xl md:text-5xl font-bold mb-6 text-gray-800">
+              2025 경신 스크린린골프 대회
             </h1>
-            <p className="text-base md:text-xl mb-8 text-blue-100">
+            <p className="text-base md:text-xl mb-8 text-gray-600">
               Kyungshin Golf Tournament - 5개 대회로 구성된 골프 대회
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 sm:space-x-4">
@@ -78,8 +77,8 @@ export default function Home() {
       {/* 대회 종목 섹션 */}
       <div>
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">대회 종목</h2>
-          <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">대회 종목</h2>
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             다양한 골프 경기로 구성된 대회에서 실력을 겨뤄보세요!
           </p>
         </div>
@@ -87,13 +86,13 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* 본부별 토너먼트 */}
           <Link href="/tournament/department">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">🏆</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-3">본부별 토너먼트</h3>
-                <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">본부별 토너먼트</h3>
+                <p className="text-sm md:text-base text-gray-600  mb-4 leading-relaxed flex-grow">
                   16강 토너먼트 형식으로 진행되는 본부 대항전입니다. 본부간 골프실력을 겨뤄보세요!
                 </p>
                 <div className="flex items-center text-blue-600 font-medium group-hover:text-blue-700 mt-auto">
@@ -108,13 +107,13 @@ export default function Home() {
 
           {/* 경영진 매치 */}
           <Link href="/tournament/executive">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">👑</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">경영진 매치게임</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-xl font-bold text-gray-900  mb-3">경영진 매치게임</h3>
+                <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
                   회사 경영진들의 골프 매치입니다. 경영진+팀장급+팀원급으로 이루어진 팀의 맞대결이 진행됩니다.
                 </p>
                 <div className="flex items-center text-purple-600 font-medium group-hover:text-purple-700 mt-auto">
@@ -129,13 +128,13 @@ export default function Home() {
 
           {/* 롱기스트 */}
           <Link href="/longest">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">🚀</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">롱기스트 드라이브</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-xl font-bold text-gray-900  mb-3">롱기스트 드라이브</h3>
+                <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
                   가장 긴 거리를 기록하는 드라이버 샷 경쟁입니다. 파워와 정확성이 관건입니다.
                 </p>
                 <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 mt-auto">
@@ -150,13 +149,13 @@ export default function Home() {
 
           {/* 퍼팅게임 */}
           <Link href="/putting">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">🎯</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">퍼팅 정확도</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-xl font-bold text-gray-900  mb-3">퍼팅 정확도</h3>
+                <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
                   19.74m 목표 지점에 정확히 맞추는 퍼팅 정확도 경쟁입니다. 단 골프 미경험자만 참여가 가능합니다.
                 </p>
                 <div className="flex items-center text-orange-600 font-medium group-hover:text-orange-700 mt-auto">
@@ -171,13 +170,13 @@ export default function Home() {
 
           {/* 니어핀 */}
           <Link href="/nearest">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">🎪</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">니어핀 챌린지</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-xl font-bold text-gray-900  mb-3">니어핀 챌린지</h3>
+                <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
                   51m 목표 지점에 최대한 근접하는 어프로치치 샷 정확도 경쟁입니다.
                 </p>
                 <div className="flex items-center text-red-600 font-medium group-hover:text-red-700 mt-auto">
@@ -192,13 +191,13 @@ export default function Home() {
 
           {/* 관리자 */}
           <Link href="/admin">
-            <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 h-full">
+            <div className="group bg-white dark:bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 h-full">
               <div className="p-8 h-full flex flex-col">
                 <div className="w-16 h-16 bg-gradient-to-br from-gray-500 to-gray-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl font-bold">⚙️</span>
+                  <span className="text-white text-2xl font-bold"></span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">관리자 대시보드</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed flex-grow">
+                <h3 className="text-xl font-bold text-gray-900  mb-3">관리자 대시보드</h3>
+                <p className="text-gray-600  mb-4 leading-relaxed flex-grow">
                   참가자 등록, 결과 입력 및 대회 관리를 위한 관리자 전용 페이지입니다.
                 </p>
                 <div className="flex items-center text-gray-600 font-medium group-hover:text-gray-700 mt-auto">
@@ -214,10 +213,10 @@ export default function Home() {
       </div>
 
       {/* 실시간 현황 대시보드 */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 px-8 py-6 border-b border-gray-200 dark:border-gray-600">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">실시간 대회 현황</h2>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">Live Tournament Dashboard</p>
+      <div className="bg-white dark:bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-900">실시간 대회 현황</h2>
+          <p className="text-gray-600 mt-1">Live Tournament Dashboard</p>
         </div>
         <div className="p-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6">

@@ -71,23 +71,23 @@ export default function NearestPage() {
 
       {/* 통계 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-red-600">{records.length}</div>
           <div className="text-sm text-gray-600">총 참가자</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-green-600">
             {records.length > 0 ? Math.min(...records.map(r => r.accuracy)).toFixed(2) : 0}m
           </div>
           <div className="text-sm text-gray-600">최고 정확도 (가장 가까운 오차)</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-blue-600">
             {records.length > 0 ? (records.reduce((sum, r) => sum + r.accuracy, 0) / records.length).toFixed(2) : 0}m
           </div>
           <div className="text-sm text-gray-600">평균 오차</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-purple-600">
             {records.filter(r => r.accuracy <= 3).length}
           </div>
@@ -96,7 +96,7 @@ export default function NearestPage() {
       </div>
 
       {/* 시각화 차트 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-6">정확도 시각화</h2>
         <div className="space-y-4">
           {sortedRecords.map((record, index) => (
@@ -158,7 +158,7 @@ export default function NearestPage() {
       </div>
 
       {/* 순위표 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">순위표</h2>
         <div className="overflow-x-auto">
           <table className="w-full">

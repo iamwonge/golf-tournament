@@ -413,23 +413,23 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
 
       {/* 통계 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-blue-600">16</div>
           <div className="text-sm text-gray-600">총 참가자</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-green-600">
             {matches.filter(m => m.status === 'COMPLETED').length}
           </div>
           <div className="text-sm text-gray-600">완료된 경기</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-yellow-600">
             {matches.filter(m => m.status === 'IN_PROGRESS').length}
           </div>
           <div className="text-sm text-gray-600">진행중 경기</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-gray-600">
             {matches.filter(m => m.status === 'SCHEDULED').length}
           </div>
@@ -438,7 +438,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
       </div>
 
       {/* 토너먼트 브래킷 - 16강부터 시작 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-gray-800">16강 토너먼트 브래킷 - 모든 정보 입력</h2>
           {matches.length === 0 && (

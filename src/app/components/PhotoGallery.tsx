@@ -34,7 +34,7 @@ export default function PhotoGallery() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900">대회 사진</h2>
           <p className="text-gray-600 mt-1">Tournament Photo Gallery</p>
@@ -54,7 +54,7 @@ export default function PhotoGallery() {
 
   if (photos.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900">대회 사진</h2>
           <p className="text-gray-600 mt-1">Tournament Photo Gallery</p>
@@ -73,7 +73,7 @@ export default function PhotoGallery() {
   const subPhotos = photos.slice(6, 10);
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+    <div className="bg-white dark:bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
       <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <div>

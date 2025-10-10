@@ -82,21 +82,21 @@ export default function AdminPage() {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-1 md:grid-cols-4 gap-4"
       >
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-blue-600">{users.length}</div>
           <div className="text-sm text-gray-600">총 참가자</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-green-600">{tournaments.length}</div>
           <div className="text-sm text-gray-600">토너먼트</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-yellow-600">
             {tournaments.flatMap(t => t.matches || []).filter((m: any) => m.status === 'COMPLETED').length}
           </div>
           <div className="text-sm text-gray-600">완료된 경기</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-purple-600">{records.length}</div>
           <div className="text-sm text-gray-600">등록된 기록</div>
         </div>
@@ -107,7 +107,7 @@ export default function AdminPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white rounded-lg shadow-md"
+        className="bg-white dark:bg-white rounded-lg shadow-md"
       >
         <div className="border-b border-gray-200">
           <nav className="flex flex-wrap px-6">
