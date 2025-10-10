@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MobileNav from "./components/MobileNav";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,7 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16 md:h-20">
               {/* 로고 및 제목 */}
-              <div className="flex items-center space-x-2 md:space-x-4 flex-1 min-w-0">
+              <Link href="/" className="flex items-center space-x-2 md:space-x-4 flex-1 min-w-0 hover:opacity-80 transition-opacity cursor-pointer">
                 <img 
                   src="/kyungshin logo.png" 
                   alt="경신 로고" 
@@ -58,7 +59,7 @@ export default function RootLayout({
                   <span className="hidden sm:inline">2025 경신 스크린골프 대회</span>
                   <span className="sm:hidden">경신 골프대회</span>
                 </div>
-              </div>
+              </Link>
 
               {/* 네비게이션 메뉴 */}
               <div className="flex items-center">
