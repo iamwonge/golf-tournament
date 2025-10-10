@@ -341,21 +341,21 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
 
       {/* 통계 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-purple-600">4</div>
           <div className="text-sm text-gray-600">총 참가자</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-blue-600">{matches.length}</div>
           <div className="text-sm text-gray-600">총 매치</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-green-600">
             {matches.filter(m => m.status === 'COMPLETED').length}
           </div>
           <div className="text-sm text-gray-600">완료된 매치</div>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
           <div className="text-2xl font-bold text-gray-600">
             {matches.filter(m => m.status === 'SCHEDULED').length}
           </div>
@@ -408,7 +408,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
       </div>
 
       {/* 최종 점수 결과 - 점수 입력 기능 포함 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-6">최종 점수 - 점수 입력</h2>
         
         {/* 4개 팀의 최종 점수 - 4x1 그리드 */}
@@ -421,7 +421,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`border-2 rounded-xl p-6 ${index === 0 && match.status === 'COMPLETED' ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-gray-200'} shadow-lg text-center`}
+              className={`border-2 rounded-xl p-6 ${index === 0 && match.status === 'COMPLETED' ? 'bg-yellow-50 dark:bg-yellow-50 border-yellow-300' : 'bg-white dark:bg-white border-gray-200'} shadow-lg text-center`}
             >
               {index === 0 && match.status === 'COMPLETED' && (
                 <div className="text-3xl mb-2">🏆</div>
@@ -464,7 +464,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                 ) : (
                   <div>
                     <div className="font-bold text-lg text-gray-800 mb-2">{match.teamName}</div>
-                    <div className="text-sm text-red-600 font-semibold">{match.executiveName}</div>
+                    <div className="text-sm text-black font-semibold">{match.executiveName}</div>
                     <div className="text-sm text-blue-600">{match.managerName}</div>
                     <div className="text-sm text-green-600">{match.memberName}</div>
                   </div>
@@ -560,7 +560,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
       </div>
 
       {/* 순위표 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">순위표</h2>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -577,7 +577,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
               {matches
                 .sort((a, b) => (a.score || 999) - (b.score || 999))
                 .map((match, index) => (
-                <tr key={match.id} className="border-b border-gray-100 hover:bg-gray-50">
+                <tr key={match.id} className="border-b border-gray-100 hover:bg-gray-50 dark:hover:bg-gray-50">
                   <td className="py-3 px-4 text-center">
                     <div className="flex items-center justify-center space-x-1">
                       {index === 0 && match.status === 'COMPLETED' && <span className="text-lg">🏆</span>}
@@ -589,7 +589,7 @@ export default function ExecutiveTournament({ loading }: ExecutiveTournamentProp
                       <span className="text-lg">👔</span>
                       <div>
                         <div className="font-medium">{match.teamName}</div>
-                        <div className="text-xs text-gray-900 dark:text-white">{match.executiveName}</div>
+                        <div className="text-xs text-black">{match.executiveName}</div>
                         <div className="text-xs text-blue-600">{match.managerName}</div>
                         <div className="text-xs text-green-600">{match.memberName}</div>
                       </div>
