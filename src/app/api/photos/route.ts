@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { put } from '@vercel/blob';
+import path from 'path';
+import { unlink } from 'fs/promises';
 // Sharp 모듈을 동적으로 import하여 Vercel 배포 문제 해결
 import { isAdmin } from '@/lib/auth';
 
