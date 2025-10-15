@@ -25,6 +25,7 @@ export default function GalleryPage() {
     try {
       const response = await fetch('/api/photos');
       const data = await response.json();
+      console.log('Fetched photos data:', data);
       setPhotos(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch photos:', error);
@@ -102,6 +103,12 @@ export default function GalleryPage() {
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error('Gallery image load error:', photo.filePath);
+                    }}
+                    onLoad={() => {
+                      console.log('Gallery image loaded successfully:', photo.filePath);
+                    }}
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
                     <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
