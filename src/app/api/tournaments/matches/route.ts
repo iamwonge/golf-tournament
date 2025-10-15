@@ -26,13 +26,18 @@ export async function GET(request: NextRequest) {
       round: match.round,
       matchNumber: match.matchNumber,
       player1Name: match.player1?.name || '대기중',
+      player1Name2: match.player1Name2 || '',
+      player1Name3: match.player1Name3 || '',
       player1Department: match.player1?.department || '대기중',
       player2Name: match.player2?.name || '대기중',
+      player2Name2: match.player2Name2 || '',
+      player2Name3: match.player2Name3 || '',
       player2Department: match.player2?.department || '대기중',
       player1Score: match.player1Score,
       player2Score: match.player2Score,
       winnerId: match.winnerId,
-      status: match.status
+      status: match.status,
+      scheduledDate: match.scheduledDate || ''
     }));
 
     return NextResponse.json(formattedMatches);
