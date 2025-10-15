@@ -142,7 +142,12 @@ export async function POST(request: NextRequest) {
         player1Score,
         player2Score,
         winnerId,
-        status: status || 'SCHEDULED'
+        status: status || 'SCHEDULED',
+        player1Name2,
+        player1Name3,
+        player2Name2,
+        player2Name3,
+        scheduledDate
       },
       create: {
         id: matchId,
@@ -154,7 +159,12 @@ export async function POST(request: NextRequest) {
         player1Score,
         player2Score,
         winnerId,
-        status: status || 'SCHEDULED'
+        status: status || 'SCHEDULED',
+        player1Name2,
+        player1Name3,
+        player2Name2,
+        player2Name3,
+        scheduledDate
       }
     });
 
@@ -246,7 +256,12 @@ export async function PUT(request: NextRequest) {
         player1Score,
         player2Score,
         winnerId,
-        status: status || 'SCHEDULED'
+        status: status || 'SCHEDULED',
+        player1Name2,
+        player1Name3,
+        player2Name2,
+        player2Name3,
+        scheduledDate
       }
     });
 

@@ -42,10 +42,30 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         if (response.ok) {
           const data = await response.json();
           if (data.length > 0) {
+            // 데이터베이스에서 가져온 데이터를 Match 형식으로 변환
+            const mappedMatches = data.map((match: any) => ({
+              id: match.id,
+              round: match.round,
+              matchNumber: match.matchNumber,
+              player1Name: match.player1?.name || '참가자 1',
+              player1Name2: match.player1Name2 || '',
+              player1Name3: match.player1Name3 || '',
+              player1Department: match.player1?.department || '본부 1',
+              player2Name: match.player2?.name || '참가자 2',
+              player2Name2: match.player2Name2 || '',
+              player2Name3: match.player2Name3 || '',
+              player2Department: match.player2?.department || '본부 2',
+              player1Score: match.player1Score,
+              player2Score: match.player2Score,
+              winnerId: match.winnerId,
+              status: match.status,
+              scheduledDate: match.scheduledDate || ''
+            }));
+            
             // 누락된 라운드 확인 및 생성
-            const completeMatches = ensureAllRounds(data);
+            const completeMatches = ensureAllRounds(mappedMatches);
             setMatches(completeMatches);
-            if (completeMatches.length > data.length) {
+            if (completeMatches.length > mappedMatches.length) {
               // 누락된 라운드가 있었다면 데이터베이스에 저장
               saveMatchesToDatabase(completeMatches);
             }
@@ -728,6 +748,11 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                 >
                   <div className="text-xs font-semibold mb-3 text-center">
                     경기 {match.matchNumber} - {getStatusText(match.status)}
+                    {match.scheduledDate && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        📅 {match.scheduledDate}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-3">
@@ -776,7 +801,31 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   
                   {/* 버튼들 */}
                   <div className="mt-3 space-y-2">
-                    {editingMatch === match.id ? (
+                    {editingPlayer === match.id ? (
+                      <div className="space-y-2">
+                        <input
+                          type="text"
+                          className="w-full px-2 py-1 border rounded text-xs"
+                          placeholder="경기 일정 (예: 2024-01-15 14:00)"
+                          defaultValue={match.scheduledDate || ''}
+                          onChange={(e) => handleNameChange(match.id, 'scheduledDate', e.target.value)}
+                        />
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleSaveNames(match.id)}
+                            className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                          >
+                            일정 저장
+                          </button>
+                          <button
+                            onClick={() => setEditingPlayer(null)}
+                            className="flex-1 bg-gray-600 text-white px-3 py-2 rounded text-sm hover:bg-gray-700"
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </div>
+                    ) : editingMatch === match.id ? (
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleSaveScore(match.id)}
@@ -792,14 +841,22 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      match.player1Name && match.player2Name && (
+                      <div className="flex space-x-2">
                         <button
-                          onClick={() => setEditingMatch(match.id)}
-                          className="w-full bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                          onClick={() => setEditingPlayer(match.id)}
+                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
                         >
-                          점수 입력
+                          일정 수정
                         </button>
-                      )
+                        {match.player1Name && match.player2Name && (
+                          <button
+                            onClick={() => setEditingMatch(match.id)}
+                            className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                          >
+                            점수 입력
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>
@@ -869,7 +926,31 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   
                   {/* 버튼들 */}
                   <div className="mt-4 space-y-2">
-                    {editingMatch === match.id ? (
+                    {editingPlayer === match.id ? (
+                      <div className="space-y-2">
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border rounded text-sm"
+                          placeholder="경기 일정 (예: 2024-01-15 14:00)"
+                          defaultValue={match.scheduledDate || ''}
+                          onChange={(e) => handleNameChange(match.id, 'scheduledDate', e.target.value)}
+                        />
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleSaveNames(match.id)}
+                            className="flex-1 bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700"
+                          >
+                            일정 저장
+                          </button>
+                          <button
+                            onClick={() => setEditingPlayer(null)}
+                            className="flex-1 bg-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700"
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </div>
+                    ) : editingMatch === match.id ? (
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleSaveScore(match.id)}
@@ -885,14 +966,22 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      match.player1Name && match.player2Name && (
+                      <div className="flex space-x-2">
                         <button
-                          onClick={() => setEditingMatch(match.id)}
-                          className="w-full bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
+                          onClick={() => setEditingPlayer(match.id)}
+                          className="flex-1 bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
                         >
-                          점수 입력
+                          일정 수정
                         </button>
-                      )
+                        {match.player1Name && match.player2Name && (
+                          <button
+                            onClick={() => setEditingMatch(match.id)}
+                            className="flex-1 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
+                          >
+                            점수 입력
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>
@@ -962,7 +1051,31 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   
                   {/* 버튼들 */}
                   <div className="mt-6 space-y-3">
-                    {editingMatch === match.id ? (
+                    {editingPlayer === match.id ? (
+                      <div className="space-y-3">
+                        <input
+                          type="text"
+                          className="w-full px-4 py-3 border-2 rounded-lg text-lg"
+                          placeholder="경기 일정 (예: 2024-01-15 14:00)"
+                          defaultValue={match.scheduledDate || ''}
+                          onChange={(e) => handleNameChange(match.id, 'scheduledDate', e.target.value)}
+                        />
+                        <div className="flex space-x-3">
+                          <button
+                            onClick={() => handleSaveNames(match.id)}
+                            className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-green-700 transition-colors"
+                          >
+                            일정 저장
+                          </button>
+                          <button
+                            onClick={() => setEditingPlayer(null)}
+                            className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-gray-700 transition-colors"
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </div>
+                    ) : editingMatch === match.id ? (
                       <div className="flex space-x-3">
                         <button
                           onClick={() => handleSaveScore(match.id)}
@@ -978,14 +1091,22 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      match.player1Name && match.player2Name && (
+                      <div className="flex space-x-3">
                         <button
-                          onClick={() => setEditingMatch(match.id)}
-                          className="w-full bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                          onClick={() => setEditingPlayer(match.id)}
+                          className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors"
                         >
-                          🏆 결승 점수 입력
+                          📅 일정 수정
                         </button>
-                      )
+                        {match.player1Name && match.player2Name && (
+                          <button
+                            onClick={() => setEditingMatch(match.id)}
+                            className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                          >
+                            🏆 결승 점수 입력
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>

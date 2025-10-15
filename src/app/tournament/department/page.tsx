@@ -8,13 +8,18 @@ interface Match {
   round: number;
   matchNumber: number;
   player1Name: string;
+  player1Name2?: string;
+  player1Name3?: string;
   player1Department: string;
   player2Name: string;
+  player2Name2?: string;
+  player2Name3?: string;
   player2Department: string;
   player1Score?: number;
   player2Score?: number;
   winnerId?: string;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'BYE';
+  scheduledDate?: string;
 }
 
 export default function DepartmentTournamentPage() {
@@ -27,7 +32,26 @@ export default function DepartmentTournamentPage() {
         const response = await fetch('/api/tournaments/matches');
         if (response.ok) {
           const data = await response.json();
-          setMatches(data);
+          // 데이터베이스에서 가져온 데이터를 Match 형식으로 변환
+          const mappedMatches = data.map((match: any) => ({
+            id: match.id,
+            round: match.round,
+            matchNumber: match.matchNumber,
+            player1Name: match.player1?.name || '참가자 1',
+            player1Name2: match.player1Name2 || '',
+            player1Name3: match.player1Name3 || '',
+            player1Department: match.player1?.department || '본부 1',
+            player2Name: match.player2?.name || '참가자 2',
+            player2Name2: match.player2Name2 || '',
+            player2Name3: match.player2Name3 || '',
+            player2Department: match.player2?.department || '본부 2',
+            player1Score: match.player1Score,
+            player2Score: match.player2Score,
+            winnerId: match.winnerId,
+            status: match.status,
+            scheduledDate: match.scheduledDate || ''
+          }));
+          setMatches(mappedMatches);
           return;
         }
       } catch (error) {
@@ -121,12 +145,19 @@ export default function DepartmentTournamentPage() {
                 >
                   <div className="text-xs font-semibold mb-3 text-center">
                     🏆 {getStatusText(match.status)}
+                    {match.scheduledDate && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        📅 {match.scheduledDate}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-2">
                     <div className={`flex justify-between items-center p-3 rounded ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'}`}>
                       <div>
                         <div className="font-medium">{match.player1Name}</div>
+                        {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                        {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                         <div className="text-xs text-gray-600">{match.player1Department}</div>
                       </div>
                       {match.player1Score !== undefined && (
@@ -139,6 +170,8 @@ export default function DepartmentTournamentPage() {
                     <div className={`flex justify-between items-center p-3 rounded ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'}`}>
                       <div>
                         <div className="font-medium">{match.player2Name}</div>
+                        {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                        {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                         <div className="text-xs text-gray-600">{match.player2Department}</div>
                       </div>
                       {match.player2Score !== undefined && (
@@ -166,6 +199,11 @@ export default function DepartmentTournamentPage() {
                   >
                     <div className="text-xs font-semibold mb-3 text-center">
                       {getStatusText(match.status)}
+                      {match.scheduledDate && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          📅 {match.scheduledDate}
+                        </div>
+                      )}
                     </div>
                     
                     <div className="space-y-2">

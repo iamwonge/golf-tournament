@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // 참가자 정보
@@ -64,6 +64,16 @@ model TournamentMatch {
   player2Score Int?
   status       MatchStatus @default(SCHEDULED)
   playedAt     DateTime?
+  
+  // 추가 선수 이름 필드들
+  player1Name2 String?
+  player1Name3 String?
+  player2Name2 String?
+  player2Name3 String?
+  
+  // 경기 일정
+  scheduledDate String?
+  
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
