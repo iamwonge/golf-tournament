@@ -259,9 +259,9 @@ export async function PUT(request: NextRequest) {
       data: {
         player1Id,
         player2Id,
-        player1Score,
-        player2Score,
-        winnerId,
+        player1Score: player1Score === undefined ? null : player1Score,
+        player2Score: player2Score === undefined ? null : player2Score,
+        winnerId: winnerId || null,
         status: status || 'SCHEDULED',
         player1Name2,
         player1Name3,

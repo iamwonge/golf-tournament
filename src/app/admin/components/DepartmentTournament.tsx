@@ -15,9 +15,9 @@ interface Match {
   player2Name2?: string;
   player2Name3?: string;
   player2Department: string;
-  player1Score?: number;
-  player2Score?: number;
-  winnerId?: string;
+  player1Score?: number | null;
+  player2Score?: number | null;
+  winnerId?: string | null;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'BYE';
   scheduledDate?: string;
 }
@@ -489,9 +489,9 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
         // 현재 매치의 점수와 승자 정보 삭제
         return {
           ...match,
-          player1Score: undefined,
-          player2Score: undefined,
-          winnerId: undefined,
+          player1Score: null,
+          player2Score: null,
+          winnerId: null,
           status: 'SCHEDULED' as const
         };
       }
@@ -719,7 +719,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
                         />
                       ) : (
-                        match.player1Score !== undefined && (
+                        match.player1Score !== undefined && match.player1Score !== null && (
                           <div className="flex items-center justify-center mt-2">
                             <div className="font-bold text-lg mr-2">{match.player1Score}</div>
                           </div>
@@ -779,7 +779,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
                         />
                       ) : (
-                        match.player2Score !== undefined && (
+                        match.player2Score !== undefined && match.player2Score !== null && (
                           <div className="font-bold text-center mt-2 text-lg">{match.player2Score}</div>
                         )
                       )}
@@ -834,7 +834,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                             점수 입력
                           </button>
                         </div>
-                        {match.status === 'COMPLETED' && (
+                        {match.status === 'COMPLETED' && match.player1Score !== null && match.player2Score !== null && (
                           <button
                             onClick={() => handleDeleteScore(match.id)}
                             className="w-full bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
@@ -886,7 +886,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
                         />
                       ) : (
-                        match.player1Score !== undefined && (
+                        match.player1Score !== undefined && match.player1Score !== null && (
                           <div className="font-bold text-lg mt-1">{match.player1Score}</div>
                         )
                       )}
@@ -908,7 +908,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
                         />
                       ) : (
-                        match.player2Score !== undefined && (
+                        match.player2Score !== undefined && match.player2Score !== null && (
                           <div className="font-bold text-lg mt-1">{match.player2Score}</div>
                         )
                       )}
@@ -974,7 +974,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                             </button>
                           )}
                         </div>
-                        {match.status === 'COMPLETED' && (
+                        {match.status === 'COMPLETED' && match.player1Score !== null && match.player2Score !== null && (
                           <button
                             onClick={() => handleDeleteScore(match.id)}
                             className="w-full bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
@@ -1021,7 +1021,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
                         />
                       ) : (
-                        match.player1Score !== undefined && (
+                        match.player1Score !== undefined && match.player1Score !== null && (
                           <div className="font-bold text-xl mt-2">{match.player1Score}</div>
                         )
                       )}
@@ -1043,7 +1043,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
                         />
                       ) : (
-                        match.player2Score !== undefined && (
+                        match.player2Score !== undefined && match.player2Score !== null && (
                           <div className="font-bold text-xl mt-2">{match.player2Score}</div>
                         )
                       )}
@@ -1109,7 +1109,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                             </button>
                           )}
                         </div>
-                        {match.status === 'COMPLETED' && (
+                        {match.status === 'COMPLETED' && match.player1Score !== null && match.player2Score !== null && (
                           <button
                             onClick={() => handleDeleteScore(match.id)}
                             className="w-full bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700"
@@ -1156,7 +1156,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player1', e.target.value)}
                         />
                       ) : (
-                        match.player1Score !== undefined && (
+                        match.player1Score !== undefined && match.player1Score !== null && (
                           <div className="font-bold text-3xl mt-3 text-purple-600">{match.player1Score}</div>
                         )
                       )}
@@ -1178,7 +1178,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                           onChange={(e) => handleScoreChange(match.id, 'player2', e.target.value)}
                         />
                       ) : (
-                        match.player2Score !== undefined && (
+                        match.player2Score !== undefined && match.player2Score !== null && (
                           <div className="font-bold text-3xl mt-3 text-purple-600">{match.player2Score}</div>
                         )
                       )}
@@ -1244,7 +1244,7 @@ export default function DepartmentTournament({ }: DepartmentTournamentProps) {
                             </button>
                           )}
                         </div>
-                        {match.status === 'COMPLETED' && (
+                        {match.status === 'COMPLETED' && match.player1Score !== null && match.player2Score !== null && (
                           <button
                             onClick={() => handleDeleteScore(match.id)}
                             className="w-full bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"

@@ -15,9 +15,9 @@ interface Match {
   player2Name2?: string;
   player2Name3?: string;
   player2Department: string;
-  player1Score?: number;
-  player2Score?: number;
-  winnerId?: string;
+  player1Score?: number | null;
+  player2Score?: number | null;
+  winnerId?: string | null;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'BYE';
   scheduledDate?: string;
 }
@@ -160,7 +160,7 @@ export default function DepartmentTournamentPage() {
                         {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                         <div className="text-xs text-gray-600">{match.player1Department}</div>
                       </div>
-                      {match.player1Score !== undefined && (
+                      {match.player1Score !== undefined && match.player1Score !== null && (
                         <div className="font-bold">{match.player1Score}</div>
                       )}
                     </div>
@@ -174,7 +174,7 @@ export default function DepartmentTournamentPage() {
                         {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                         <div className="text-xs text-gray-600">{match.player2Department}</div>
                       </div>
-                      {match.player2Score !== undefined && (
+                      {match.player2Score !== undefined && match.player2Score !== null && (
                         <div className="font-bold">{match.player2Score}</div>
                       )}
                     </div>
