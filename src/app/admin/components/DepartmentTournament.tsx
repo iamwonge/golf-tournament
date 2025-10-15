@@ -8,13 +8,18 @@ interface Match {
   round: number;
   matchNumber: number;
   player1Name: string;
+  player1Name2?: string;
+  player1Name3?: string;
   player1Department: string;
   player2Name: string;
+  player2Name2?: string;
+  player2Name3?: string;
   player2Department: string;
   player1Score?: number;
   player2Score?: number;
   winnerId?: string;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'BYE';
+  scheduledDate?: string;
 }
 
 interface DepartmentTournamentProps {
@@ -26,7 +31,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
   const [editingMatch, setEditingMatch] = useState<string | null>(null);
   const [editingPlayer, setEditingPlayer] = useState<string | null>(null);
   const [tempScores, setTempScores] = useState<{[key: string]: {player1Score: number, player2Score: number}}>({});
-  const [tempNames, setTempNames] = useState<{[key: string]: {player1Name: string, player1Department: string, player2Name: string, player2Department: string}}>({});
+  const [tempNames, setTempNames] = useState<{[key: string]: {player1Name: string, player1Name2: string, player1Name3: string, player1Department: string, player2Name: string, player2Name2: string, player2Name3: string, player2Department: string, scheduledDate: string}}>({});
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
@@ -178,13 +183,18 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
             round: match.round,
             matchNumber: match.matchNumber,
             player1Name: match.player1Name,
+            player1Name2: match.player1Name2,
+            player1Name3: match.player1Name3,
             player1Department: match.player1Department,
             player2Name: match.player2Name,
+            player2Name2: match.player2Name2,
+            player2Name3: match.player2Name3,
             player2Department: match.player2Department,
             player1Score: match.player1Score,
             player2Score: match.player2Score,
             winnerId: match.winnerId,
-            status: match.status
+            status: match.status,
+            scheduledDate: match.scheduledDate
           })
         });
       }
@@ -202,13 +212,18 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         body: JSON.stringify({
           matchId: match.id,
           player1Name: match.player1Name,
+          player1Name2: match.player1Name2,
+          player1Name3: match.player1Name3,
           player1Department: match.player1Department,
           player2Name: match.player2Name,
+          player2Name2: match.player2Name2,
+          player2Name3: match.player2Name3,
           player2Department: match.player2Department,
           player1Score: match.player1Score,
           player2Score: match.player2Score,
           winnerId: match.winnerId,
-          status: match.status
+          status: match.status,
+          scheduledDate: match.scheduledDate
         })
       });
     } catch (error) {
@@ -250,7 +265,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
   };
 
   // 참가자 정보 저장 핸들러
-  const handleSaveNames = (matchId: string) => {
+  const handleSaveNames = async (matchId: string) => {
     const tempData = tempNames[matchId];
     if (!tempData) return;
 
@@ -259,9 +274,14 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         ? { 
             ...match, 
             player1Name: tempData.player1Name || match.player1Name,
+            player1Name2: tempData.player1Name2 || match.player1Name2,
+            player1Name3: tempData.player1Name3 || match.player1Name3,
             player1Department: tempData.player1Department || match.player1Department,
             player2Name: tempData.player2Name || match.player2Name,
-            player2Department: tempData.player2Department || match.player2Department
+            player2Name2: tempData.player2Name2 || match.player2Name2,
+            player2Name3: tempData.player2Name3 || match.player2Name3,
+            player2Department: tempData.player2Department || match.player2Department,
+            scheduledDate: tempData.scheduledDate || match.scheduledDate
           }
         : match
     );
@@ -271,7 +291,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     // 데이터베이스에 업데이트된 매치 저장
     const updatedMatch = updatedMatches.find(m => m.id === matchId);
     if (updatedMatch) {
-      updateMatchInDatabase(updatedMatch);
+      await updateMatchInDatabase(updatedMatch);
     }
     
     setEditingPlayer(null);
@@ -297,7 +317,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
   };
 
   // 자동 진출 처리 함수
-  const advanceWinner = (completedMatch: Match, winnerId: string, updatedMatches: Match[]) => {
+  const advanceWinner = async (completedMatch: Match, winnerId: string, updatedMatches: Match[]) => {
     const { round, matchNumber } = completedMatch;
     const nextRound = round + 1;
     
@@ -308,23 +328,49 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     
     // 승자 정보
     const winnerName = winnerId === 'player1' ? completedMatch.player1Name : completedMatch.player2Name;
+    const winnerName2 = winnerId === 'player1' ? completedMatch.player1Name2 : completedMatch.player2Name2;
+    const winnerName3 = winnerId === 'player1' ? completedMatch.player1Name3 : completedMatch.player2Name3;
     const winnerDept = winnerId === 'player1' ? completedMatch.player1Department : completedMatch.player2Department;
     
-    return updatedMatches.map(match => {
+    const newUpdatedMatches = updatedMatches.map(match => {
       if (match.round === nextRound && match.matchNumber === nextMatchNumber) {
         // 홀수 번째 경기 승자는 player1, 짝수 번째는 player2
         if (matchNumber % 2 === 1) {
-          return { ...match, player1Name: winnerName, player1Department: winnerDept };
+          return { 
+            ...match, 
+            player1Name: winnerName, 
+            player1Name2: winnerName2,
+            player1Name3: winnerName3,
+            player1Department: winnerDept 
+          };
         } else {
-          return { ...match, player2Name: winnerName, player2Department: winnerDept };
+          return { 
+            ...match, 
+            player2Name: winnerName, 
+            player2Name2: winnerName2,
+            player2Name3: winnerName3,
+            player2Department: winnerDept 
+          };
         }
       }
       return match;
     });
+
+    // 다음 라운드 매치를 데이터베이스에도 업데이트
+    const nextMatch = newUpdatedMatches.find(m => m.round === nextRound && m.matchNumber === nextMatchNumber);
+    if (nextMatch) {
+      try {
+        await updateMatchInDatabase(nextMatch);
+      } catch (error) {
+        console.error('Failed to update next round match in database:', error);
+      }
+    }
+    
+    return newUpdatedMatches;
   };
 
   // 점수 저장 핸들러
-  const handleSaveScore = (matchId: string) => {
+  const handleSaveScore = async (matchId: string) => {
     const matchScores = tempScores[matchId];
     if (!matchScores) return;
 
@@ -352,12 +398,12 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     );
 
     // 자동 진출 처리
-    updatedMatches = advanceWinner(currentMatch, winnerId, updatedMatches);
+    updatedMatches = await advanceWinner(currentMatch, winnerId, updatedMatches);
     
     setMatches(updatedMatches);
     
-    // 데이터베이스에 현재 매치만 업데이트
-    updateMatchInDatabase(updatedMatches.find(m => m.id === matchId)!);
+    // 데이터베이스에 현재 매치 업데이트
+    await updateMatchInDatabase(updatedMatches.find(m => m.id === matchId)!);
     
     setEditingMatch(null);
     setTempScores(prev => {
@@ -484,6 +530,11 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                 >
                   <div className="text-xs font-semibold mb-3 text-center">
                     경기 {match.matchNumber} - {getStatusText(match.status)}
+                    {match.scheduledDate && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        📅 {match.scheduledDate}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-3">
@@ -494,9 +545,23 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                           <input
                             type="text"
                             className="w-full px-2 py-1 border rounded text-sm"
-                            placeholder="참가자 이름"
+                            placeholder="팀명 또는 대표 선수명"
                             defaultValue={match.player1Name}
                             onChange={(e) => handleNameChange(match.id, 'player1Name', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1 border rounded text-xs"
+                            placeholder="선수 2"
+                            defaultValue={match.player1Name2 || ''}
+                            onChange={(e) => handleNameChange(match.id, 'player1Name2', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1 border rounded text-xs"
+                            placeholder="선수 3"
+                            defaultValue={match.player1Name3 || ''}
+                            onChange={(e) => handleNameChange(match.id, 'player1Name3', e.target.value)}
                           />
                           <input
                             type="text"
@@ -505,10 +570,19 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                             defaultValue={match.player1Department}
                             onChange={(e) => handleNameChange(match.id, 'player1Department', e.target.value)}
                           />
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1 border rounded text-xs"
+                            placeholder="경기 일정 (예: 2024-01-15 14:00)"
+                            defaultValue={match.scheduledDate || ''}
+                            onChange={(e) => handleNameChange(match.id, 'scheduledDate', e.target.value)}
+                          />
                         </div>
                       ) : (
                         <div>
                           <div className="font-medium text-sm">{match.player1Name}</div>
+                          {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                          {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player1Department}</div>
                         </div>
                       )}
@@ -536,9 +610,23 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                           <input
                             type="text"
                             className="w-full px-2 py-1 border rounded text-sm"
-                            placeholder="참가자 이름"
+                            placeholder="팀명 또는 대표 선수명"
                             defaultValue={match.player2Name}
                             onChange={(e) => handleNameChange(match.id, 'player2Name', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1 border rounded text-xs"
+                            placeholder="선수 2"
+                            defaultValue={match.player2Name2 || ''}
+                            onChange={(e) => handleNameChange(match.id, 'player2Name2', e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            className="w-full px-2 py-1 border rounded text-xs"
+                            placeholder="선수 3"
+                            defaultValue={match.player2Name3 || ''}
+                            onChange={(e) => handleNameChange(match.id, 'player2Name3', e.target.value)}
                           />
                           <input
                             type="text"
@@ -551,6 +639,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                       ) : (
                         <div>
                           <div className="font-medium text-sm">{match.player2Name}</div>
+                          {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                          {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player2Department}</div>
                         </div>
                       )}
@@ -643,6 +733,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   <div className="space-y-3">
                     <div className={`p-3 rounded text-center ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium">{match.player1Name}</div>
+                      {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                      {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                       <div className="text-xs text-gray-600">{match.player1Department}</div>
                       
                       {editingMatch === match.id ? (
@@ -663,6 +755,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     
                     <div className={`p-3 rounded text-center ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium">{match.player2Name}</div>
+                      {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                      {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                       <div className="text-xs text-gray-600">{match.player2Department}</div>
                       
                       {editingMatch === match.id ? (
@@ -732,6 +826,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   <div className="space-y-4">
                     <div className={`p-4 rounded text-center ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium text-lg">{match.player1Name}</div>
+                      {match.player1Name2 && <div className="text-sm text-gray-700">{match.player1Name2}</div>}
+                      {match.player1Name3 && <div className="text-sm text-gray-700">{match.player1Name3}</div>}
                       <div className="text-sm text-gray-600">{match.player1Department}</div>
                       
                       {editingMatch === match.id ? (
@@ -752,6 +848,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     
                     <div className={`p-4 rounded text-center ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="font-medium text-lg">{match.player2Name}</div>
+                      {match.player2Name2 && <div className="text-sm text-gray-700">{match.player2Name2}</div>}
+                      {match.player2Name3 && <div className="text-sm text-gray-700">{match.player2Name3}</div>}
                       <div className="text-sm text-gray-600">{match.player2Department}</div>
                       
                       {editingMatch === match.id ? (
@@ -821,6 +919,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                   <div className="space-y-6">
                     <div className={`p-6 rounded-lg text-center ${match.winnerId === 'player1' ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-50'}`}>
                       <div className="font-bold text-xl">{match.player1Name}</div>
+                      {match.player1Name2 && <div className="text-lg text-gray-700 mt-1">{match.player1Name2}</div>}
+                      {match.player1Name3 && <div className="text-lg text-gray-700">{match.player1Name3}</div>}
                       <div className="text-lg text-gray-600 mt-1">{match.player1Department}</div>
                       
                       {editingMatch === match.id ? (
@@ -841,6 +941,8 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                     
                     <div className={`p-6 rounded-lg text-center ${match.winnerId === 'player2' ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-50'}`}>
                       <div className="font-bold text-xl">{match.player2Name}</div>
+                      {match.player2Name2 && <div className="text-lg text-gray-700 mt-1">{match.player2Name2}</div>}
+                      {match.player2Name3 && <div className="text-lg text-gray-700">{match.player2Name3}</div>}
                       <div className="text-lg text-gray-600 mt-1">{match.player2Department}</div>
                       
                       {editingMatch === match.id ? (

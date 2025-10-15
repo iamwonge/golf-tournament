@@ -50,14 +50,19 @@ export async function POST(request: NextRequest) {
       matchId, 
       round, 
       matchNumber, 
-      player1Name, 
+      player1Name,
+      player1Name2,
+      player1Name3,
       player1Department, 
-      player2Name, 
+      player2Name,
+      player2Name2,
+      player2Name3,
       player2Department,
       player1Score,
       player2Score,
       winnerId,
-      status 
+      status,
+      scheduledDate
     } = body;
 
     if (!matchId) {
@@ -166,14 +171,19 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { 
       matchId, 
-      player1Name, 
+      player1Name,
+      player1Name2,
+      player1Name3,
       player1Department, 
-      player2Name, 
+      player2Name,
+      player2Name2,
+      player2Name3,
       player2Department,
       player1Score,
       player2Score,
       winnerId,
-      status 
+      status,
+      scheduledDate
     } = body;
 
     if (!matchId) {
