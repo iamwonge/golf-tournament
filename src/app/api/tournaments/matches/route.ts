@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { isAdmin } from '@/lib/auth';
 
 // 모든 매치 조회 API
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     console.log('Fetching matches from database...');
     const matches = await prisma.tournamentMatch.findMany({
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
           }
         });
         player1Id = player1.id;
-      } catch (error) {
+      } catch {
         // 이미 존재하는 사용자 찾기
         const existingPlayer1 = await prisma.user.findUnique({
           where: { name: player1Name }
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
           }
         });
         player2Id = player2.id;
-      } catch (error) {
+      } catch {
         // 이미 존재하는 사용자 찾기
         const existingPlayer2 = await prisma.user.findUnique({
           where: { name: player2Name }
@@ -231,7 +231,7 @@ export async function PUT(request: NextRequest) {
           }
         });
         player1Id = player1.id;
-      } catch (error) {
+      } catch {
         // 이미 존재하는 사용자 찾기
         const existingPlayer1 = await prisma.user.findUnique({
           where: { name: player1Name }
@@ -253,7 +253,7 @@ export async function PUT(request: NextRequest) {
           }
         });
         player2Id = player2.id;
-      } catch (error) {
+      } catch {
         // 이미 존재하는 사용자 찾기
         const existingPlayer2 = await prisma.user.findUnique({
           where: { name: player2Name }

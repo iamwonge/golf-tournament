@@ -23,10 +23,10 @@ interface Match {
 }
 
 interface DepartmentTournamentProps {
-  loading: boolean;
+  loading?: boolean;
 }
 
-export default function DepartmentTournament({ loading }: DepartmentTournamentProps) {
+export default function DepartmentTournament({ }: DepartmentTournamentProps) {
   const [matches, setMatches] = useState<Match[]>([]);
   const [editingMatch, setEditingMatch] = useState<string | null>(null);
   const [editingPlayer, setEditingPlayer] = useState<string | null>(null);
@@ -484,7 +484,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     const nextRound = round + 1;
     const nextMatchNumber = Math.ceil(matchNumber / 2);
 
-    let updatedMatches = matches.map(match => {
+    const updatedMatches = matches.map(match => {
       if (match.id === matchId) {
         // 현재 매치의 점수와 승자 정보 삭제
         return {
@@ -551,7 +551,7 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         });
 
         if (response.ok) {
-          const result = await response.json();
+          await response.json();
           // 데이터 새로고침
           const matchesResponse = await fetch('/api/tournaments/matches');
           if (matchesResponse.ok) {
