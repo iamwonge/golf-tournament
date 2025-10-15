@@ -21,25 +21,35 @@ export async function GET(request: NextRequest) {
     console.log(`Found ${matches.length} matches in database`);
 
     // 프론트엔드 형식에 맞게 변환
-    const formattedMatches = matches.map(match => ({
-      id: match.id,
-      round: match.round,
-      matchNumber: match.matchNumber,
-      // 직접 입력된 이름이 우선, 없으면 User 테이블의 이름, 그것도 없으면 '대기중'
-      player1Name: match.player1?.name || '대기중',
-      player1Name2: match.player1Name2 || '',
-      player1Name3: match.player1Name3 || '',
-      player1Department: match.player1?.department || '대기중',
-      player2Name: match.player2?.name || '대기중',
-      player2Name2: match.player2Name2 || '',
-      player2Name3: match.player2Name3 || '',
-      player2Department: match.player2?.department || '대기중',
-      player1Score: match.player1Score,
-      player2Score: match.player2Score,
-      winnerId: match.winnerId,
-      status: match.status,
-      scheduledDate: match.scheduledDate || ''
-    }));
+    const formattedMatches = matches.map(match => {
+      // 디버깅을 위한 로그
+      console.log('Match data:', {
+        id: match.id,
+        player1Name2: match.player1Name2,
+        player1Name3: match.player1Name3,
+        scheduledDate: match.scheduledDate
+      });
+      
+      return {
+        id: match.id,
+        round: match.round,
+        matchNumber: match.matchNumber,
+        // 직접 입력된 이름이 우선, 없으면 User 테이블의 이름, 그것도 없으면 '대기중'
+        player1Name: match.player1?.name || '대기중',
+        player1Name2: match.player1Name2 || '',
+        player1Name3: match.player1Name3 || '',
+        player1Department: match.player1?.department || '대기중',
+        player2Name: match.player2?.name || '대기중',
+        player2Name2: match.player2Name2 || '',
+        player2Name3: match.player2Name3 || '',
+        player2Department: match.player2?.department || '대기중',
+        player1Score: match.player1Score,
+        player2Score: match.player2Score,
+        winnerId: match.winnerId,
+        status: match.status,
+        scheduledDate: match.scheduledDate || ''
+      };
+    });
 
     return NextResponse.json(formattedMatches);
   } catch (error) {

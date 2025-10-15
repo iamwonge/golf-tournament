@@ -470,6 +470,75 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
     alert('점수가 저장되고 승자가 다음 라운드로 진출했습니다!');
   };
 
+  // 점수 삭제 핸들러
+  const handleDeleteScore = async (matchId: string) => {
+    if (!confirm('점수를 삭제하시겠습니까?\n다음 라운드 진출자도 함께 초기화됩니다.')) {
+      return;
+    }
+
+    const currentMatch = matches.find(m => m.id === matchId);
+    if (!currentMatch) return;
+
+    // 다음 라운드에서 이 경기의 승자를 제거
+    const { round, matchNumber } = currentMatch;
+    const nextRound = round + 1;
+    const nextMatchNumber = Math.ceil(matchNumber / 2);
+
+    let updatedMatches = matches.map(match => {
+      if (match.id === matchId) {
+        // 현재 매치의 점수와 승자 정보 삭제
+        return {
+          ...match,
+          player1Score: undefined,
+          player2Score: undefined,
+          winnerId: undefined,
+          status: 'SCHEDULED' as const
+        };
+      }
+      
+      // 다음 라운드에서 해당 선수 제거
+      if (match.round === nextRound && match.matchNumber === nextMatchNumber) {
+        if (matchNumber % 2 === 1) {
+          // 홀수 번째 경기 승자였던 player1 제거
+          return {
+            ...match,
+            player1Name: '대기중',
+            player1Name2: '',
+            player1Name3: '',
+            player1Department: `${round === 1 ? '16강' : round === 2 ? '8강' : '4강'} 결과 대기`
+          };
+        } else {
+          // 짝수 번째 경기 승자였던 player2 제거
+          return {
+            ...match,
+            player2Name: '대기중',
+            player2Name2: '',
+            player2Name3: '',
+            player2Department: `${round === 1 ? '16강' : round === 2 ? '8강' : '4강'} 결과 대기`
+          };
+        }
+      }
+      
+      return match;
+    });
+
+    setMatches(updatedMatches);
+    
+    // 데이터베이스에 업데이트
+    const updatedMatch = updatedMatches.find(m => m.id === matchId);
+    if (updatedMatch) {
+      await updateMatchInDatabase(updatedMatch);
+    }
+
+    // 다음 라운드 매치도 업데이트
+    const nextMatch = updatedMatches.find(m => m.round === nextRound && m.matchNumber === nextMatchNumber);
+    if (nextMatch) {
+      await updateMatchInDatabase(nextMatch);
+    }
+    
+    alert('점수가 삭제되었습니다!');
+  };
+
   // 16강 브래킷 생성 함수
   const handleGenerateBracket = async () => {
     if (confirm('16강 토너먼트 브래킷을 생성하시겠습니까?\n16개 팀 슬롯이 생성되며, 기존 경기 데이터는 모두 삭제됩니다.')) {
@@ -651,7 +720,9 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         />
                       ) : (
                         match.player1Score !== undefined && (
-                          <div className="font-bold text-center mt-2 text-lg">{match.player1Score}</div>
+                          <div className="flex items-center justify-center mt-2">
+                            <div className="font-bold text-lg mr-2">{match.player1Score}</div>
+                          </div>
                         )
                       )}
                     </div>
@@ -748,19 +819,29 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => setEditingPlayer(match.id)}
-                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
-                        >
-                          참가자 수정
-                        </button>
-                        <button
-                          onClick={() => setEditingMatch(match.id)}
-                          className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
-                        >
-                          점수 입력
-                        </button>
+                      <div className="space-y-2">
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => setEditingPlayer(match.id)}
+                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                          >
+                            참가자 수정
+                          </button>
+                          <button
+                            onClick={() => setEditingMatch(match.id)}
+                            className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                          >
+                            점수 입력
+                          </button>
+                        </div>
+                        {match.status === 'COMPLETED' && (
+                          <button
+                            onClick={() => handleDeleteScore(match.id)}
+                            className="w-full bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
+                          >
+                            점수 삭제
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -876,19 +957,29 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => setEditingPlayer(match.id)}
-                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
-                        >
-                          일정 수정
-                        </button>
-                        {match.player1Name && match.player2Name && (
+                      <div className="space-y-2">
+                        <div className="flex space-x-2">
                           <button
-                            onClick={() => setEditingMatch(match.id)}
-                            className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                            onClick={() => setEditingPlayer(match.id)}
+                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
                           >
-                            점수 입력
+                            일정 수정
+                          </button>
+                          {match.player1Name && match.player2Name && match.player1Name !== '대기중' && match.player2Name !== '대기중' && (
+                            <button
+                              onClick={() => setEditingMatch(match.id)}
+                              className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700"
+                            >
+                              점수 입력
+                            </button>
+                          )}
+                        </div>
+                        {match.status === 'COMPLETED' && (
+                          <button
+                            onClick={() => handleDeleteScore(match.id)}
+                            className="w-full bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
+                          >
+                            점수 삭제
                           </button>
                         )}
                       </div>
@@ -1001,19 +1092,29 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => setEditingPlayer(match.id)}
-                          className="flex-1 bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
-                        >
-                          일정 수정
-                        </button>
-                        {match.player1Name && match.player2Name && (
+                      <div className="space-y-2">
+                        <div className="flex space-x-2">
                           <button
-                            onClick={() => setEditingMatch(match.id)}
-                            className="flex-1 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
+                            onClick={() => setEditingPlayer(match.id)}
+                            className="flex-1 bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
                           >
-                            점수 입력
+                            일정 수정
+                          </button>
+                          {match.player1Name && match.player2Name && match.player1Name !== '대기중' && match.player2Name !== '대기중' && (
+                            <button
+                              onClick={() => setEditingMatch(match.id)}
+                              className="flex-1 bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
+                            >
+                              점수 입력
+                            </button>
+                          )}
+                        </div>
+                        {match.status === 'COMPLETED' && (
+                          <button
+                            onClick={() => handleDeleteScore(match.id)}
+                            className="w-full bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700"
+                          >
+                            점수 삭제
                           </button>
                         )}
                       </div>
@@ -1126,19 +1227,29 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
                         </button>
                       </div>
                     ) : (
-                      <div className="flex space-x-3">
-                        <button
-                          onClick={() => setEditingPlayer(match.id)}
-                          className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors"
-                        >
-                          📅 일정 수정
-                        </button>
-                        {match.player1Name && match.player2Name && (
+                      <div className="space-y-3">
+                        <div className="flex space-x-3">
                           <button
-                            onClick={() => setEditingMatch(match.id)}
-                            className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                            onClick={() => setEditingPlayer(match.id)}
+                            className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors"
                           >
-                            🏆 결승 점수 입력
+                            📅 일정 수정
+                          </button>
+                          {match.player1Name && match.player2Name && match.player1Name !== '대기중' && match.player2Name !== '대기중' && (
+                            <button
+                              onClick={() => setEditingMatch(match.id)}
+                              className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                            >
+                              🏆 결승 점수 입력
+                            </button>
+                          )}
+                        </div>
+                        {match.status === 'COMPLETED' && (
+                          <button
+                            onClick={() => handleDeleteScore(match.id)}
+                            className="w-full bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-red-700 transition-colors"
+                          >
+                            🗑️ 점수 삭제
                           </button>
                         )}
                       </div>
