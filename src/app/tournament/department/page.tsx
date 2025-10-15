@@ -210,6 +210,8 @@ export default function DepartmentTournamentPage() {
                       <div className={`flex justify-between items-center p-3 rounded ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'}`}>
                         <div>
                           <div className="font-medium">{match.player1Name}</div>
+                          {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                          {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player1Department}</div>
                         </div>
                         {match.player1Score !== undefined && (
@@ -222,6 +224,8 @@ export default function DepartmentTournamentPage() {
                       <div className={`flex justify-between items-center p-3 rounded ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'}`}>
                         <div>
                           <div className="font-medium">{match.player2Name}</div>
+                          {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                          {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player2Department}</div>
                         </div>
                         {match.player2Score !== undefined && (
@@ -250,12 +254,19 @@ export default function DepartmentTournamentPage() {
                   >
                     <div className="text-xs font-semibold mb-2 text-center">
                       {getStatusText(match.status)}
+                      {match.scheduledDate && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          📅 {match.scheduledDate}
+                        </div>
+                      )}
                     </div>
                     
                     <div className="space-y-2">
                       <div className={`flex justify-between items-center p-2 rounded text-sm ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                         <div>
                           <div className="font-medium">{match.player1Name}</div>
+                          {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                          {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player1Department}</div>
                         </div>
                         {match.player1Score !== undefined && (
@@ -268,6 +279,8 @@ export default function DepartmentTournamentPage() {
                       <div className={`flex justify-between items-center p-2 rounded text-sm ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                         <div>
                           <div className="font-medium">{match.player2Name}</div>
+                          {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                          {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                           <div className="text-xs text-gray-600">{match.player2Department}</div>
                         </div>
                         {match.player2Score !== undefined && (
@@ -296,11 +309,18 @@ export default function DepartmentTournamentPage() {
                   >
                     <div className="text-xs font-semibold mb-2 text-center">
                       {getStatusText(match.status)}
+                      {match.scheduledDate && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          📅 {match.scheduledDate}
+                        </div>
+                      )}
                     </div>
                     
                     {match.status === 'BYE' ? (
                       <div className="text-center">
                         <div className="font-medium text-sm">{match.player1Name}</div>
+                        {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                        {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                         <div className="text-xs text-gray-600">{match.player1Department}</div>
                         <div className="text-xs font-semibold text-blue-600 mt-1">부전승</div>
                       </div>
@@ -308,6 +328,8 @@ export default function DepartmentTournamentPage() {
                       <div className="space-y-1">
                         <div className={`p-1 rounded text-xs ${match.winnerId === 'player1' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                           <div className="font-medium">{match.player1Name}</div>
+                          {match.player1Name2 && <div className="text-xs text-gray-700">{match.player1Name2}</div>}
+                          {match.player1Name3 && <div className="text-xs text-gray-700">{match.player1Name3}</div>}
                           <div className="text-xs text-gray-600 truncate">{match.player1Department}</div>
                           {match.player1Score !== undefined && (
                             <div className="font-bold text-center">{match.player1Score}</div>
@@ -318,6 +340,8 @@ export default function DepartmentTournamentPage() {
                         
                         <div className={`p-1 rounded text-xs ${match.winnerId === 'player2' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                           <div className="font-medium">{match.player2Name}</div>
+                          {match.player2Name2 && <div className="text-xs text-gray-700">{match.player2Name2}</div>}
+                          {match.player2Name3 && <div className="text-xs text-gray-700">{match.player2Name3}</div>}
                           <div className="text-xs text-gray-600 truncate">{match.player2Department}</div>
                           {match.player2Score !== undefined && (
                             <div className="font-bold text-center">{match.player2Score}</div>
@@ -358,6 +382,8 @@ export default function DepartmentTournamentPage() {
                   <td className="py-3 px-4">
                     <div className={match.winnerId === 'player1' ? 'font-bold text-green-600' : ''}>
                       {match.player1Name}
+                      {match.player1Name2 && <div className="text-sm text-gray-700">{match.player1Name2}</div>}
+                      {match.player1Name3 && <div className="text-sm text-gray-700">{match.player1Name3}</div>}
                       <div className="text-sm text-gray-600">{match.player1Department}</div>
                     </div>
                   </td>
@@ -367,6 +393,8 @@ export default function DepartmentTournamentPage() {
                   <td className="py-3 px-4">
                     <div className={match.winnerId === 'player2' ? 'font-bold text-green-600' : ''}>
                       {match.player2Name}
+                      {match.player2Name2 && <div className="text-sm text-gray-700">{match.player2Name2}</div>}
+                      {match.player2Name3 && <div className="text-sm text-gray-700">{match.player2Name3}</div>}
                       <div className="text-sm text-gray-600">{match.player2Department}</div>
                     </div>
                   </td>

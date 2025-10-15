@@ -21,16 +21,7 @@ export async function GET() {
     console.log(`Found ${matches.length} matches in database`);
 
     // 프론트엔드 형식에 맞게 변환
-    const formattedMatches = matches.map(match => {
-      // 디버깅을 위한 로그
-      console.log('Match data:', {
-        id: match.id,
-        player1Name2: match.player1Name2,
-        player1Name3: match.player1Name3,
-        scheduledDate: match.scheduledDate
-      });
-      
-      return {
+    const formattedMatches = matches.map(match => ({
         id: match.id,
         round: match.round,
         matchNumber: match.matchNumber,
@@ -48,8 +39,7 @@ export async function GET() {
         winnerId: match.winnerId,
         status: match.status,
         scheduledDate: match.scheduledDate || ''
-      };
-    });
+    }));
 
     return NextResponse.json(formattedMatches);
   } catch (error) {
