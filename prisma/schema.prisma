@@ -93,6 +93,7 @@ model LongestRecord {
   department String   // 소속 본부
   phone      String?  // 전화번호 (선택)
   email      String?  // 이메일 (선택)
+  gender     String   // "MALE" 또는 "FEMALE"
   
   distance   Float    // 거리 (미터)
   createdAt  DateTime @default(now())

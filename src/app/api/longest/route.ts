@@ -3,9 +3,15 @@ import { prisma } from '@/lib/prisma';
 import { isAdmin } from '@/lib/auth';
 
 // 롱기스트 드라이브 기록 조회
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const gender = searchParams.get('gender');
+
+    const whereClause = gender ? { gender } : {};
+    
     const records = await prisma.longestRecord.findMany({
+      where: whereClause,
       orderBy: { distance: 'desc' }
     });
 
@@ -28,10 +34,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { playerName, department, phone, email, distance } = body;
+    const { playerName, department, phone, email, distance, gender } = body;
 
-    if (!playerName || !department || !distance) {
-      return NextResponse.json({ error: 'Player name, department, and distance are required' }, { status: 400 });
+    if (!playerName || !department || !distance || !gender) {
+      return NextResponse.json({ error: 'Player name, department, distance, and gender are required' }, { status: 400 });
+    }
+
+    if (!['MALE', 'FEMALE'].includes(gender)) {
+      return NextResponse.json({ error: 'Gender must be MALE or FEMALE' }, { status: 400 });
     }
 
     const record = await prisma.longestRecord.create({
@@ -41,6 +51,7 @@ export async function POST(request: NextRequest) {
         phone: phone || null,
         email: email || null,
         distance: parseFloat(distance),
+        gender,
       }
     });
 

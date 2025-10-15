@@ -222,12 +222,11 @@ export default function NearestPage() {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">점수 기준</h4>
+            <h4 className="font-semibold mb-2">게임 규칙</h4>
             <ul className="space-y-1">
-              <li>• <span className="text-yellow-600">🥇 1m 이내</span>: 완벽한 샷!</li>
-              <li>• <span className="text-green-600">🥈 3m 이내</span>: 훌륭한 샷!</li>
-              <li>• <span className="text-orange-600">🥉 5m 이내</span>: 좋은 샷!</li>
-              <li>• <span className="text-red-600">⚪ 5m 초과</span>: 연습이 필요해요</li>
+              <li>• 본부대항, 경영진 대회 참여자 외 누구나 참여 가능</li>
+              <li>• 웨지는 구비되어 있는 퍼터 사용 가능</li>
+              <li>• 최대 2번 연습게임 가능하며 "도전!" 을 말해야 참여 가능</li>
             </ul>
           </div>
         </div>

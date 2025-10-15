@@ -5,14 +5,15 @@ import { motion } from 'framer-motion';
 import { useAdminData } from './hooks/useAdminData';
 import AuthGuard from './components/AuthGuard';
 import DashboardTab from './components/DashboardTab';
-import LongestDrive from './components/LongestDrive';
+import MaleLongestDrive from './components/MaleLongestDrive';
+import FemaleLongestDrive from './components/FemaleLongestDrive';
 import DepartmentTournament from './components/DepartmentTournament';
 import ExecutiveTournament from './components/ExecutiveTournament';
 import PuttingGame from './components/PuttingGame';
 import NearestPin from './components/NearestPin';
 import PhotoGallery from './components/PhotoGallery';
 
-type TabType = 'dashboard' | 'department' | 'executive' | 'longest' | 'putting' | 'nearest' | 'photos' | 'settings';
+type TabType = 'dashboard' | 'department' | 'executive' | 'male-longest' | 'female-longest' | 'putting' | 'nearest' | 'photos' | 'settings';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -115,7 +116,8 @@ export default function AdminPage() {
               { id: 'dashboard', name: '대시보드', icon: '📊' },
               { id: 'department', name: '본부별 토너먼트', icon: '🏆' },
               { id: 'executive', name: '경영진 매치', icon: '👑' },
-              { id: 'longest', name: '롱기스트 드라이브', icon: '🚀' },
+              { id: 'male-longest', name: '남자 롱기스트', icon: '🚀' },
+              { id: 'female-longest', name: '여자 롱기스트', icon: '💃' },
               { id: 'putting', name: '퍼팅게임', icon: '🎯' },
               { id: 'nearest', name: '니어핀 챌린지', icon: '🎪' },
               { id: 'photos', name: '사진 갤러리', icon: '📸' },
@@ -157,8 +159,14 @@ export default function AdminPage() {
             )}
 
 
-            {activeTab === 'longest' && (
-              <LongestDrive
+            {activeTab === 'male-longest' && (
+              <MaleLongestDrive
+                loading={loading}
+              />
+            )}
+
+            {activeTab === 'female-longest' && (
+              <FemaleLongestDrive
                 loading={loading}
               />
             )}
