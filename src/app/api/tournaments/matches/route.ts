@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
       id: match.id,
       round: match.round,
       matchNumber: match.matchNumber,
+      // 직접 입력된 이름이 우선, 없으면 User 테이블의 이름, 그것도 없으면 '대기중'
       player1Name: match.player1?.name || '대기중',
       player1Name2: match.player1Name2 || '',
       player1Name3: match.player1Name3 || '',

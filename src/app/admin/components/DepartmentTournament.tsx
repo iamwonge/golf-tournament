@@ -47,14 +47,14 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
               id: match.id,
               round: match.round,
               matchNumber: match.matchNumber,
-              player1Name: match.player1?.name || '참가자 1',
+              player1Name: match.player1Name || match.player1?.name || '대기중',
               player1Name2: match.player1Name2 || '',
               player1Name3: match.player1Name3 || '',
-              player1Department: match.player1?.department || '본부 1',
-              player2Name: match.player2?.name || '참가자 2',
+              player1Department: match.player1Department || match.player1?.department || '대기중',
+              player2Name: match.player2Name || match.player2?.name || '대기중',
               player2Name2: match.player2Name2 || '',
               player2Name3: match.player2Name3 || '',
-              player2Department: match.player2?.department || '본부 2',
+              player2Department: match.player2Department || match.player2?.department || '대기중',
               player1Score: match.player1Score,
               player2Score: match.player2Score,
               winnerId: match.winnerId,
@@ -80,27 +80,37 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
       
       // 로컬스토리지도 없으면 초기 16강 토너먼트 구조 생성
       const initialMatches: Match[] = [
-        // 16강 (8경기)
-        ...Array.from({ length: 8 }, (_, i) => ({
-          id: `r1_m${i + 1}`,
-          round: 1,
-          matchNumber: i + 1,
-          player1Name: `참가자 ${i * 2 + 1}`,
-          player1Department: `본부 ${i * 2 + 1}`,
-          player2Name: `참가자 ${i * 2 + 2}`,
-          player2Department: `본부 ${i * 2 + 2}`,
-          status: 'SCHEDULED' as const
-        })),
+      // 16강 (8경기)
+      ...Array.from({ length: 8 }, (_, i) => ({
+        id: `r1_m${i + 1}`,
+        round: 1,
+        matchNumber: i + 1,
+        player1Name: `참가자 ${i * 2 + 1}`,
+        player1Name2: '',
+        player1Name3: '',
+        player1Department: `본부 ${i * 2 + 1}`,
+        player2Name: `참가자 ${i * 2 + 2}`,
+        player2Name2: '',
+        player2Name3: '',
+        player2Department: `본부 ${i * 2 + 2}`,
+        status: 'SCHEDULED' as const,
+        scheduledDate: ''
+      })),
         // 8강 (4경기) - 항상 생성
         ...Array.from({ length: 4 }, (_, i) => ({
           id: `r2_m${i + 1}`,
           round: 2,
           matchNumber: i + 1,
           player1Name: '대기중',
+          player1Name2: '',
+          player1Name3: '',
           player1Department: '16강 결과 대기',
           player2Name: '대기중',
+          player2Name2: '',
+          player2Name3: '',
           player2Department: '16강 결과 대기',
-          status: 'SCHEDULED' as const
+          status: 'SCHEDULED' as const,
+          scheduledDate: ''
         })),
         // 4강 (2경기) - 항상 생성
         ...Array.from({ length: 2 }, (_, i) => ({
@@ -108,10 +118,15 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           round: 3,
           matchNumber: i + 1,
           player1Name: '대기중',
+          player1Name2: '',
+          player1Name3: '',
           player1Department: '8강 결과 대기',
           player2Name: '대기중',
+          player2Name2: '',
+          player2Name3: '',
           player2Department: '8강 결과 대기',
-          status: 'SCHEDULED' as const
+          status: 'SCHEDULED' as const,
+          scheduledDate: ''
         })),
         // 결승 (1경기) - 항상 생성
         {
@@ -119,10 +134,15 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           round: 4,
           matchNumber: 1,
           player1Name: '대기중',
+          player1Name2: '',
+          player1Name3: '',
           player1Department: '4강 결과 대기',
           player2Name: '대기중',
+          player2Name2: '',
+          player2Name3: '',
           player2Department: '4강 결과 대기',
-          status: 'SCHEDULED' as const
+          status: 'SCHEDULED' as const,
+          scheduledDate: ''
         }
       ];
       
@@ -147,10 +167,15 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           round: 2,
           matchNumber: i + 1,
           player1Name: '대기중',
+          player1Name2: '',
+          player1Name3: '',
           player1Department: '16강 결과 대기',
           player2Name: '대기중',
+          player2Name2: '',
+          player2Name3: '',
           player2Department: '16강 결과 대기',
-          status: 'SCHEDULED' as const
+          status: 'SCHEDULED' as const,
+          scheduledDate: ''
         }))
       );
     }
@@ -163,10 +188,15 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           round: 3,
           matchNumber: i + 1,
           player1Name: '대기중',
+          player1Name2: '',
+          player1Name3: '',
           player1Department: '8강 결과 대기',
           player2Name: '대기중',
+          player2Name2: '',
+          player2Name3: '',
           player2Department: '8강 결과 대기',
-          status: 'SCHEDULED' as const
+          status: 'SCHEDULED' as const,
+          scheduledDate: ''
         }))
       );
     }
@@ -178,10 +208,15 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
         round: 4,
         matchNumber: 1,
         player1Name: '대기중',
+        player1Name2: '',
+        player1Name3: '',
         player1Department: '4강 결과 대기',
         player2Name: '대기중',
+        player2Name2: '',
+        player2Name3: '',
         player2Department: '4강 결과 대기',
-        status: 'SCHEDULED' as const
+        status: 'SCHEDULED' as const,
+        scheduledDate: ''
       });
     }
 
@@ -359,16 +394,16 @@ export default function DepartmentTournament({ loading }: DepartmentTournamentPr
           return { 
             ...match, 
             player1Name: winnerName, 
-            player1Name2: winnerName2,
-            player1Name3: winnerName3,
+            player1Name2: winnerName2 || '',
+            player1Name3: winnerName3 || '',
             player1Department: winnerDept 
           };
         } else {
           return { 
             ...match, 
             player2Name: winnerName, 
-            player2Name2: winnerName2,
-            player2Name3: winnerName3,
+            player2Name2: winnerName2 || '',
+            player2Name3: winnerName3 || '',
             player2Department: winnerDept 
           };
         }
