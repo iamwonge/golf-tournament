@@ -51,7 +51,7 @@ export default function Home() {
         <div className="relative px-8 py-16 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl md:text-5xl font-bold mb-6 text-white">
-              2025 경신 스크린린골프 대회
+              2025 스크린린골프 대회
             </h1>
             <p className="text-base md:text-xl mb-8 text-blue-100">
               Kyungshin Golf Tournament - 5개 대회로 구성된 골프 대회

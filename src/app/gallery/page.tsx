@@ -89,20 +89,20 @@ export default function GalleryPage() {
       ) : (
         <>
           {/* 사진 그리드 - 인스타그램 스타일 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1">
             {photos.map((photo) => (
               <div 
                 key={photo.id}
                 className="group cursor-pointer"
                 onClick={() => setSelectedPhoto(photo)}
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-gray-200">
+                <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg">
                   <Image
                     src={photo.filePath}
                     alt={photo.title}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       console.error('Gallery image load error:', photo.filePath);
                     }}
@@ -110,13 +110,12 @@ export default function GalleryPage() {
                       console.log('Gallery image loaded successfully:', photo.filePath);
                     }}
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
-                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
-                      <h3 className="font-medium text-sm truncate">{photo.title}</h3>
-                      <p className="text-xs text-gray-200 mt-1">
-                        {new Date(photo.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
+                  {/* 호버 시 제목 표시 */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3">
+                    <h3 className="text-white text-sm font-medium truncate">{photo.title}</h3>
+                    <p className="text-gray-200 text-xs mt-1">
+                      {new Date(photo.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
               </div>
