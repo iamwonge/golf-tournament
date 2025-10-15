@@ -226,7 +226,7 @@ export default function NearestPage() {
             <ul className="space-y-1">
               <li>• 본부대항, 경영진 대회 참여자 외 누구나 참여 가능</li>
               <li>• 웨지는 구비되어 있는 퍼터 사용 가능</li>
-              <li>• 최대 2번 연습게임 가능하며 "도전!" 을 말해야 참여 가능</li>
+              <li>• 최대 2번 연습게임 가능하며 &quot;도전!&quot; 을 말해야 참여 가능</li>
             </ul>
           </div>
         </div>

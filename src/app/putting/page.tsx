@@ -226,7 +226,7 @@ export default function PuttingPage() {
             <ul className="space-y-1">
               <li>• 골프 미경험자 참여 가능</li>
               <li>• 준비되어 있는 퍼터 사용 가능</li>
-              <li>• 최대 2번 연습 가능하며 "도전"을 말해야 기록 가능</li>
+              <li>• 최대 2번 연습 가능하며 &quot;도전&quot;을 말해야 기록 가능</li>
             </ul>
           </div>
         </div>
