@@ -24,6 +24,7 @@ interface Match {
 
 export default function DepartmentTournamentPage() {
   const [matches, setMatches] = useState<Match[]>([]);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   useEffect(() => {
     // 데이터베이스에서 토너먼트 매치 데이터 로드
@@ -98,6 +99,143 @@ export default function DepartmentTournamentPage() {
           🏆 본부별 토너먼트 (16강)
         </h1>
         <p className="text-gray-600">각 본부 대표들의 치열한 경쟁!</p>
+      </div>
+
+      {/* 대회 정보 아코디언 */}
+      <div className="bg-white dark:bg-white rounded-lg shadow-md overflow-hidden">
+        <button
+          onClick={() => setIsInfoOpen(!isInfoOpen)}
+          className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-lg">ℹ️</span>
+            <h2 className="text-lg font-semibold text-gray-800">스크린 골프 대회 기본 정보</h2>
+          </div>
+          <motion.div
+            animate={{ rotate: isInfoOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </button>
+        
+        <motion.div
+          initial={false}
+          animate={{ height: isInfoOpen ? 'auto' : 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <div className="p-6 pt-0 border-t border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* 스크린골프 장비 정보 */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-md font-semibold text-blue-700 mb-3 flex items-center gap-2">
+                    🎮 스크린골프 장비
+                  </h3>
+                  <div className="bg-blue-50 rounded-lg p-4 space-y-3">
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-600 font-medium min-w-[60px]">장비:</span>
+                      <div>
+                        <p className="text-gray-700">플라이트 스코프 미보레인지 + E6 Connect</p>
+                        <a 
+                          href="https://www.showgolf.co.kr/new/html/sub03_01.asp" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm underline"
+                        >
+                          장비 상세보기 →
+                        </a>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-blue-600 font-medium mb-2">📹 플레이 영상</p>
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full rounded-lg"
+                          src="https://www.youtube.com/embed/A-auJ6dcJYM?start=855"
+                          title="스크린 골프 플레이 영상"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 대회 규칙 */}
+                <div>
+                  <h3 className="text-md font-semibold text-green-700 mb-3 flex items-center gap-2">
+                    📋 대회 규칙
+                  </h3>
+                  <div className="bg-green-50 rounded-lg p-4 space-y-2 text-sm">
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">플레이:</span> 18홀 플레이</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">방식:</span> 3인포썸 방식 진행</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">플레이 CC:</span> 10/19 공개</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">멀리건:</span> 인당 1개씩 사용가능 (타인원 양도 불가)</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">퍼팅 퍼터 돌리기:</span> 허용</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">개인공:</span> 사용 가능</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <p className="text-gray-700"><span className="font-medium">개인 골프채:</span> 사용 가능하되 불가 시 비치되어있는 골프채 사용 가능</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 비치 골프채 사양 */}
+              <div>
+                <h3 className="text-md font-semibold text-orange-700 mb-3 flex items-center gap-2">
+                  ⛳ 비치 골프채 사양
+                </h3>
+                <div className="bg-orange-50 rounded-lg p-4 space-y-3 text-sm">
+                  <div className="border-b border-orange-200 pb-2">
+                    <p className="font-semibold text-orange-700">아이언</p>
+                    <p className="text-gray-700">타이틀리스트 T150 + 다골 S200</p>
+                  </div>
+                  <div className="border-b border-orange-200 pb-2">
+                    <p className="font-semibold text-orange-700">드라이버</p>
+                    <p className="text-gray-700">타이틀리스트 TSR + 벤투스 TR 블루 60S</p>
+                  </div>
+                  <div className="border-b border-orange-200 pb-2">
+                    <p className="font-semibold text-orange-700">웨지</p>
+                    <p className="text-gray-700">타이틀리스트 보키 + 웨지플렉스</p>
+                    <p className="text-gray-600 text-xs mt-1">60°, 56°, 52°</p>
+                  </div>
+                  <div className="border-b border-orange-200 pb-2">
+                    <p className="font-semibold text-orange-700">유틸리티</p>
+                    <p className="text-gray-700">핑 G430</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-orange-700">퍼터</p>
+                    <p className="text-gray-700">스카티카메론 스퀘어백 34인치</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* 통계 카드 */}
