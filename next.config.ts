@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // 출력 설정 최적화
+  output: 'standalone',
+  
+  // 이미지 최적화 설정
   images: {
     domains: ['localhost'],
     remotePatterns: [
@@ -19,6 +23,13 @@ const nextConfig: NextConfig = {
         hostname: '*.vercel-storage.com',
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+  },
+
+  // 실험적 기능 설정
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
   
   // 보안 헤더 설정

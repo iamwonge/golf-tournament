@@ -246,71 +246,53 @@ export default function Home() {
                 <div className="w-3 h-3 bg-indigo-500 rounded-full mr-3"></div>
                 <h3 className="text-xl font-bold text-gray-900">10월 27일 (일)</h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">17:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">임태훈</div>
-                      <div className="text-sm text-gray-600">연구본부 설계분석팀</div>
-                    </div>
+              <div className="space-y-3">
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">17:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    연구본부 설계분석팀 임태훈
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">17:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">김영수</div>
-                      <div className="text-sm text-gray-600">전자시험팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">17:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전자시험팀 김영수
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">18:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">강해수</div>
-                      <div className="text-sm text-gray-600">선행생산기술팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">18:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    선행생산기술팀 강해수
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">18:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">강병규</div>
-                      <div className="text-sm text-gray-600">설계분석팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">18:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    설계분석팀 강병규
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">19:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">최만식</div>
-                      <div className="text-sm text-gray-600">PM팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">19:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    PM팀 최만식
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">19:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">오현진</div>
-                      <div className="text-sm text-gray-600">전자설계1팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">19:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전자설계1팀 오현진
                   </div>
                 </div>
               </div>
@@ -322,71 +304,53 @@ export default function Home() {
                 <div className="w-3 h-3 bg-indigo-500 rounded-full mr-3"></div>
                 <h3 className="text-xl font-bold text-gray-900">10월 28일 (월)</h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">17:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">오훈 책임</div>
-                      <div className="text-sm text-gray-600">마케팅팀</div>
-                    </div>
+              <div className="space-y-3">
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">17:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    마케팅팀 오훈 책임
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">17:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">황정우</div>
-                      <div className="text-sm text-gray-600">전자설계2팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">17:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전자설계2팀 황정우
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">18:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">김학균</div>
-                      <div className="text-sm text-gray-600">전자설계1팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">18:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전자설계1팀 김학균
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">18:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">이지성</div>
-                      <div className="text-sm text-gray-600">시작팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">18:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    시작팀 이지성
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">19:00</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">이태희</div>
-                      <div className="text-sm text-gray-600">전장선행설계팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">19:00</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전장선행설계팀 이태희
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-indigo-600 font-bold text-sm">19:30</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">박재환</div>
-                      <div className="text-sm text-gray-600">전장선행설계팀</div>
-                    </div>
+                <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mr-5">
+                    <span className="text-indigo-600 font-bold text-base">19:30</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    전장선행설계팀 박재환
                   </div>
                 </div>
               </div>
@@ -398,7 +362,7 @@ export default function Home() {
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="font-medium">레슨 장소: 스크린골프장 | 레슨 시간: 30분</span>
+              <span className="font-medium">레슨 장소: 경신 본사 5층 대강당 | 레슨 시간 : 20분 (레슨 시작 10분 전 도착) </span>
             </div>
           </div>
         </div>
