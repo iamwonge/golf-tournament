@@ -84,7 +84,7 @@ export default function ExecutiveTournamentPage() {
       {/* 통계 카드 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
-          <div className="text-2xl font-bold text-purple-600">4</div>
+          <div className="text-2xl font-bold text-purple-600">3</div>
           <div className="text-sm text-gray-600">총 참가팀</div>
         </div>
         <div className="bg-white dark:bg-white rounded-lg shadow-md p-6 text-center">
@@ -108,7 +108,7 @@ export default function ExecutiveTournamentPage() {
       {/* 참가팀 소개 */}
       <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">참가팀 소개</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {matches.map((match, index) => (
             <motion.div
               key={match.id}
@@ -177,8 +177,8 @@ export default function ExecutiveTournamentPage() {
       <div className="bg-white dark:bg-white rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-6">최종 점수</h2>
         
-        {/* 4개 팀의 최종 점수 - 4x1 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        {/* 3개 팀의 최종 점수 - 3x1 그리드 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {matches
             .sort((a, b) => (a.score || 999) - (b.score || 999)) // 낮은 점수 순으로 정렬
             .map((match, index) => (
