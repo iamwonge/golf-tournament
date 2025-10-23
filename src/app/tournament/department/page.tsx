@@ -141,11 +141,11 @@ export default function DepartmentTournamentPage() {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-green-600">•</span>
-                    <p className="text-gray-700"><span className="font-medium">방식:</span> 3인포썸 방식 진행</p>
+                    <p className="text-gray-700"><span className="font-medium">방식:</span> 3인포썸 방식 진행 (끝나는 순서대로 티샷 진행)</p>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-green-600">•</span>
-                    <p className="text-gray-700"><span className="font-medium">플레이 CC:</span> 10/19 공개</p>
+                    <p className="text-gray-700"><span className="font-medium">플레이 CC:</span> 10/26 공개</p>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-green-600">•</span>
