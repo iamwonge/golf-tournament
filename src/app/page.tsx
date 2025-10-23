@@ -260,7 +260,7 @@ export default function Home() {
                     <span className="text-indigo-600 font-bold text-base">17:30</span>
                   </div>
                   <div className="text-lg font-semibold text-gray-900">
-                    전자시스템설게팀 박동현현
+                    전자시스템설게팀 박동현
                   </div>
                 </div>
                 <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
