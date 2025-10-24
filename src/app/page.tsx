@@ -67,7 +67,7 @@ export default function Home() {
                   <div className="text-xs md:text-sm font-medium text-gray-700">본부대항전 참가팀</div>
                 </div>
                 <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
-                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">4</div>
+                  <div className="text-lg md:text-2xl font-bold text-gray-900 mb-1">3</div>
                   <div className="text-xs md:text-sm font-medium text-gray-700">경영진 대항전 팀</div>
                 </div>
                 <div className="text-center p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
