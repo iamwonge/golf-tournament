@@ -230,19 +230,6 @@ export default function DepartmentTournamentPage() {
                         />
                       </div>
                     </div>
-                    <div>
-                      <p className="text-blue-600 font-medium mb-2">📹 플레이 영상</p>
-                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                        <iframe
-                          className="absolute top-0 left-0 w-full h-full rounded-lg"
-                          src="https://www.youtube.com/watch?v=7aYouzxLP4I&t=606s"
-                          title="스크린 골프 플레이 영상"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
