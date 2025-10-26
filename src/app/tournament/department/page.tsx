@@ -145,7 +145,7 @@ export default function DepartmentTournamentPage() {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-green-600">•</span>
-                    <p className="text-gray-700"><span className="font-medium">플레이 CC:</span> 10/26 공개</p>
+                    <p className="text-gray-700"><span className="font-medium">플레이 CC:</span> 테디밸리 (16강)</p>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-green-600">•</span>
@@ -235,7 +235,7 @@ export default function DepartmentTournamentPage() {
                       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                         <iframe
                           className="absolute top-0 left-0 w-full h-full rounded-lg"
-                          src="https://www.youtube.com/embed/A-auJ6dcJYM?start=855"
+                          src="https://www.youtube.com/watch?v=7aYouzxLP4I&t=606s"
                           title="스크린 골프 플레이 영상"
                           frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
