@@ -244,7 +244,7 @@ export default function Home() {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-center mb-6">
                 <div className="w-3 h-3 bg-indigo-500 rounded-full mr-3"></div>
-                <h3 className="text-xl font-bold text-gray-900">10월 27일 (일)</h3>
+                <h3 className="text-xl font-bold text-gray-900">10월 27일 (월)</h3>
               </div>
               <div className="space-y-3">
                 <div className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
