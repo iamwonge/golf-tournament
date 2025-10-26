@@ -206,15 +206,28 @@ export default function DepartmentTournamentPage() {
                     <div className="flex items-start gap-2">
                       <span className="text-blue-600 font-medium min-w-[60px]">장비:</span>
                       <div>
-                        <p className="text-gray-700">플라이트 스코프 미보레인지 + E6 Connect</p>
+                        <p className="text-gray-700">QED 아이샷 아이미니 (EYE MINI)</p>
                         <a 
-                          href="https://www.showgolf.co.kr/new/html/sub03_01.asp" 
+                          href="https://qedgolfshop.com/104/?idx=363" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800 text-sm underline"
                         >
                           장비 상세보기 →
                         </a>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-blue-600 font-medium mb-2">📹 소개 영상</p>
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full rounded-lg"
+                          src="https://www.youtube.com/embed/MvtT8C15-KM"
+                          title="소개 영상"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
                       </div>
                     </div>
                     <div>
