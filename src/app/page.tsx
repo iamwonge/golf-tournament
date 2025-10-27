@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import PhotoGallery from "./components/PhotoGallery";
 import { useState, useEffect } from 'react';
 
@@ -16,6 +17,7 @@ export default function Home() {
     putting: 0,
     nearest: 0
   });
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchRecordCounts = async () => {
@@ -44,6 +46,17 @@ export default function Home() {
 
     fetchRecordCounts();
   }, []);
+
+  const closeModal = () => {
+    setIsScheduleModalOpen(false);
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
   return (
     <div className="space-y-12">
       {/* 히어로 섹션 - 경신 브랜드 스타일 */}
@@ -87,6 +100,64 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* 대회 상세 일정표 */}
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        <div className="p-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+            대회 상세 일정표
+          </h2>
+          <p className="text-center text-gray-600 mb-6">
+            클릭하면 상세 일정표를 확대해서 볼 수 있습니다
+          </p>
+          <div 
+            className="cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => setIsScheduleModalOpen(true)}
+          >
+            <Image
+              src="/일정 최종 스크린골프 대회_251027.png"
+              alt="대회 상세 일정표"
+              width={1200}
+              height={800}
+              className="rounded-lg w-full h-auto"
+              priority
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 모달 */}
+      {isScheduleModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+          onClick={handleBackdropClick}
+        >
+          <div className="relative max-w-6xl w-full">
+            {/* 닫기 버튼 */}
+            <button
+              onClick={closeModal}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              aria-label="닫기"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* 모달 이미지 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
+              <Image
+                src="/일정 최종 스크린골프 대회_251027.png"
+                alt="대회 상세 일정표"
+                width={1200}
+                height={800}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 대회 종목 섹션 */}
       <div>
